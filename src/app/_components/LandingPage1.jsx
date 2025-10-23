@@ -1,6 +1,7 @@
 import React from "react";
 import WhatMakesUsDifferent from "./landing1/WhatMakesUsDifferent";
 import DoctorCard from "./landing1/DoctorCard";
+import FrequentlyAskedQuestion from "./landing1/FrequentlyAskedQuestion";
 
 const LandingPage1 = () => {
   return (
@@ -64,6 +65,7 @@ const LandingPage1 = () => {
       </div>
       <WhatMakesUsDifferent />
       <DoctorCard />
+      <FrequentlyAskedQuestion />
     </>
   );
 };
