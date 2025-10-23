@@ -45,7 +45,7 @@ const FrequentlyAskedQuestion = () => {
   return (
     <div className="w-full bg-white">
       <div className="max-w-[1100px] px-4 md:px-0 py-20 mx-auto">
-        <div className="mb-20 text-center">
+        <div className=" mb-10 md:mb-20 text-center">
           <h1 className="text-[36px] md:text-[45px] font-bold">
             Frequently Asked Questions
           </h1>
