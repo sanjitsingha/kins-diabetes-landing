@@ -6,8 +6,8 @@ import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-bg.jpg";
 
 export default function Hero() {
-  // --- form data state ---
   const [formData, setFormData] = useState({
+    access_key: "644fef15-366a-4f68-aed6-e387e72456ab", // ✅ added here
     name: "",
     phone_number: "",
     age: "",
@@ -21,33 +21,40 @@ export default function Hero() {
 
   const [status, setStatus] = useState("");
 
-  // --- handle form submit ---
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      name: formData.name,
-      phone_number: formData.phone_number,
-      age: formData.age,
-      note: formData.note,
-      utm_source: formData.utm_source,
-    };
+    setStatus("⏳ Submitting...");
 
     try {
-      const response = await fetch("https://getform.io/f/allqrdga", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         setStatus("✅ Thank you! We’ll contact you soon.");
-        // reset formData here
+        setFormData({
+          access_key: "644fef15-366a-4f68-aed6-e387e72456ab", // ✅ keep it in reset
+          name: "",
+          phone_number: "",
+          age: "",
+          note: "",
+          utm_source:
+            typeof window !== "undefined"
+              ? new URLSearchParams(window.location.search).get("utm_source") ||
+                "direct"
+              : "direct",
+        });
       } else {
+        console.error(result);
         setStatus("❌ Something went wrong. Please try again.");
       }
     } catch (error) {
-      setStatus("⚠️ Network error. Please check your connection.");
+      console.error(error);
+      setStatus("⚠️ Network error. Please try again.");
     }
   };
 
@@ -65,31 +72,30 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/60" />
       </div>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 pt-30 pb-10 md:py-26 grid lg:grid-cols-2 gap-12 items-center">
-        {/* Left Side - Text Section */}
+        {/* Left Section */}
         <div>
-          <h1 className="text-[45px] font-extrabold text-center md:text-left leading-tight text-black/80">
-            Your Journey to Better <br className="hidden md:block" /> Health
-            Starts Here
+          <h1 className="text-[45px] font-bold text-center md:text-left leading-tight text-black/80">
+            Advanced <br className="hidden md:block" />{" "}
+            <span className="text-[#12a4dd] font-extrabold">
+              Diabetes Care in Siliguri
+            </span>
           </h1>
 
           <p className="my-10 text-center md:text-left text-black/60">
-            Expert diabetic care with a personal touch. We understand your
-            struggle, and we’re here to guide you every step of the way.
+            Your one-stop solution for complete diabetes management.
           </p>
 
-          {/* Stats Badges */}
           <div className="w-full grid grid-cols-3 justify-center">
             <div className="flex flex-col md:text-left text-center">
               <p className="text-[35px] md:text-[45px] font-extrabold text-[#12a4dd] tracking-tighter">
                 50K+
               </p>
-              <p className="font-bold">Satisfied Patients</p>
+              <p className="font-bold">Patients Served</p>
             </div>
             <div className="flex flex-col md:text-left text-center">
               <p className="text-[35px] md:text-[45px] font-extrabold text-[#12a4dd] tracking-tighter">
-                4.9★
+                4.7★
               </p>
               <p className="font-bold">
                 Rated on <br className="md:hidden block" /> Google
@@ -97,29 +103,26 @@ export default function Hero() {
             </div>
             <div className="flex flex-col md:text-left text-center">
               <p className="text-[35px] md:text-[45px] font-extrabold text-[#12a4dd] tracking-tighter">
-                15+
+                14+
               </p>
-              <p className="font-bold">Years of Excellence</p>
+              <p className="font-bold">Years of Expertise</p>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Form */}
+        {/* Right Section - Form */}
         <div>
           <form
             onSubmit={handleSubmit}
             className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xl text-black"
           >
             <h3 className="text-2xl font-bold mb-4 text-center">
-              Book Your Free Consultation
+              Book Your Free Counselling
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label htmlFor="name" className="block text-sm font-medium mb-1">
                   Name *
                 </label>
                 <input
@@ -136,10 +139,7 @@ export default function Hero() {
               </div>
 
               <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label htmlFor="phone" className="block text-sm font-medium mb-1">
                   Phone Number *
                 </label>
                 <input
@@ -173,10 +173,7 @@ export default function Hero() {
               </div>
 
               <div>
-                <label
-                  htmlFor="note"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label htmlFor="note" className="block text-sm font-medium mb-1">
                   Note (Optional)
                 </label>
                 <textarea
