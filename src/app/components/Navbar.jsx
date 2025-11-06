@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className=" bg-transparent pt-8 " >
+    <nav className=" bg-transparent " >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20 md:h-18">
           {/* Logo */}

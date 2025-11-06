@@ -57,7 +57,8 @@ const UrgencyTimer = () => {
   }, []);
 
   return (
-    <div className="w-full fixed z-90 bg-[#12a4dd] text-white text-center py-2 text-sm font-semibold tracking-wide shadow-sm">
+   <div className="pb-8">
+     <div className="w-full  fixed z-90 bg-[#12a4dd] text-white text-center py-2 text-sm font-semibold tracking-wide shadow-sm">
       ⏳ Hurry! Offer ends in{" "}
       <span className="text-yellow-300 font-bold">
         {String(timeLeft.hours).padStart(2, "0")}h{" "}
@@ -65,6 +66,7 @@ const UrgencyTimer = () => {
         {String(timeLeft.seconds).padStart(2, "0")}s
       </span>
     </div>
+   </div>
   );
 };
 
