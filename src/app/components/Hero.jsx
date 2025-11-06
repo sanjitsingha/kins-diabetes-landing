@@ -14,7 +14,8 @@ export default function Hero() {
     note: "",
     utm_source:
       typeof window !== "undefined"
-        ? new URLSearchParams(window.location.search).get("utm_source") || "direct"
+        ? new URLSearchParams(window.location.search).get("utm_source") ||
+          "direct"
         : "direct",
   });
 
@@ -22,25 +23,33 @@ export default function Hero() {
 
   // --- handle form submit ---
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("https://formspree.io/f/xnnoebvg", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    const payload = {
+      name: formData.name,
+      phone_number: formData.phone_number,
+      age: formData.age,
+      note: formData.note,
+      utm_source: formData.utm_source,
+    };
 
-    if (response.ok) {
-      setStatus("✅ Thank you! We’ll contact you soon.");
-      setFormData({ name: "", phone_number: "", age: "", note: "" });
-    } else {
-      setStatus("❌ Something went wrong. Try again later.");
+    try {
+      const response = await fetch("https://getform.io/f/allqrdga", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setStatus("✅ Thank you! We’ll contact you soon.");
+        // reset formData here
+      } else {
+        setStatus("❌ Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setStatus("⚠️ Network error. Please check your connection.");
     }
-  } catch (err) {
-    setStatus("⚠️ Network error. Please try again.");
-  }
-}
+  };
 
   return (
     <section className="relative flex items-center overflow-hidden">
@@ -107,7 +116,10 @@ export default function Hero() {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium mb-1"
+                >
                   Name *
                 </label>
                 <input
@@ -124,7 +136,10 @@ export default function Hero() {
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium mb-1"
+                >
                   Phone Number *
                 </label>
                 <input
@@ -158,7 +173,10 @@ export default function Hero() {
               </div>
 
               <div>
-                <label htmlFor="note" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="note"
+                  className="block text-sm font-medium mb-1"
+                >
                   Note (Optional)
                 </label>
                 <textarea

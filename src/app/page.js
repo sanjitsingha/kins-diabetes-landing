@@ -10,10 +10,12 @@ import Testimonials from "./components/Testimonials";
 import VideoTestimonials from "./components/VideoTestimonials";
 import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
+import UrgencyTimer from "./components/UrgencyTimer";
 
 export default function Home() {
   return (
     <>
+    <UrgencyTimer/>
       <Navbar />
       <Hero />
       <WhoAreWe />
