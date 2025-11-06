@@ -22,43 +22,25 @@ export default function Hero() {
 
   // --- handle form submit ---
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!formData.name || !formData.phone_number || !formData.age) {
-      setStatus("⚠️ Please fill all required fields.");
-      return;
+  try {
+    const response = await fetch("https://formspree.io/f/xnnoebvg", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      setStatus("✅ Thank you! We’ll contact you soon.");
+      setFormData({ name: "", phone_number: "", age: "", note: "" });
+    } else {
+      setStatus("❌ Something went wrong. Try again later.");
     }
-
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzHF4F5W7UnfS7zSkbta0LMm4wWPYFEPV6s17tBKhlfKgkPFGNd_2pSNuRbWw1Yxvlf/exec",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (response.ok) {
-        setStatus("✅ Thank you! We’ll contact you soon.");
-        setFormData({
-          name: "",
-          phone_number: "",
-          age: "",
-          note: "",
-          utm_source:
-            typeof window !== "undefined"
-              ? new URLSearchParams(window.location.search).get("utm_source") || "direct"
-              : "direct",
-        });
-      } else {
-        setStatus("❌ Something went wrong. Please try again later.");
-      }
-    } catch (error) {
-      console.error(error);
-      setStatus("⚠️ Network error. Please check your connection.");
-    }
-  };
+  } catch (err) {
+    setStatus("⚠️ Network error. Please try again.");
+  }
+}
 
   return (
     <section className="relative flex items-center overflow-hidden">
