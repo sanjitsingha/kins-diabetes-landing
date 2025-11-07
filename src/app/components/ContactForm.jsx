@@ -164,9 +164,9 @@ export default function ContactForm() {
                       Address
                     </h4>
                     <p className="text-black/60 text-sm leading-relaxed">
-                      123 Health Street, Medical District
+                     1st Floor, Golden Heights Building, 
                       <br />
-                      Mumbai, Maharashtra 400001
+                      Jhankar More, Burdwan Road, Siliguri
                     </p>
                   </div>
                 </div>

@@ -11,6 +11,7 @@ import VideoTestimonials from "./components/VideoTestimonials";
 import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
 import UrgencyTimer from "./components/UrgencyTimer";
+import WhatMakesUsDifferent from "./components/WhatMakesUsDifferent";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <WhoAreWe />
+      <WhatMakesUsDifferent/>
       <WhatWeDo />
       <Differentiators/>
       <USPs/>

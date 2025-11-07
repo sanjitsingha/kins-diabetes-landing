@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import heroImage from "@/assets/hero-bg.jpg";
 
-export default function Hero() {
+export default function Booking() {
   const [formData, setFormData] = useState({
     name: "",
     phone_number: "",

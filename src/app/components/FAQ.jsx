@@ -6,45 +6,55 @@ import { ChevronDown } from "lucide-react";
 export default function FAQ() {
   const faqs = [
     {
-      question: "How quickly can I expect to see results?",
+      question: "I have diabetes, but I feel fine. Do I still need full check-ups?",
       answer:
-        "Most patients notice improvements in their blood sugar levels within 2–4 weeks of starting our personalized treatment plan. However, every patient is unique, and we tailor our approach to your specific needs. Consistent follow-up and adherence to the treatment plan are key to achieving optimal results.",
+        "Yes. Diabetes can cause hidden complications even if you feel okay. At Kins Diabetes, we provide all tests, doctor consultation, and counseling in just one visit.",
     },
     {
-      question: "Do you provide emergency care for diabetic complications?",
+      question: "I am already taking medicine. Do I need counseling or a diet plan?",
       answer:
-        "Yes, we offer 24/7 emergency support for all our patients. Whether it's hypoglycemia, hyperglycemia, or any diabetes-related emergency, our team is always available to guide you through immediate care steps and arrange urgent consultation if needed.",
+        "Absolutely. Medicines alone are not enough. We provide personalized counseling, diet plans, and lifestyle guidance to help you manage diabetes better.",
     },
     {
-      question: "Can I continue my current medications?",
+      question: "Can everything really be done in one day? I don’t have much time.",
       answer:
-        "We carefully review all your current medications during your first consultation. If changes are needed, we make them gradually and safely. We believe in working with your existing treatment rather than abruptly changing everything, ensuring a smooth transition to better health.",
+        "Yes. All tests, doctor consultation, counseling, and diet planning are completed in just 7 hours—saving you time and multiple trips.",
     },
     {
-      question: "Is the treatment painful or invasive?",
+      question: "I have tried other clinics, but my sugar still goes up. How is Kins Diabetes different?",
       answer:
-        "Our approach focuses on minimally invasive methods. While some diagnostic tests require blood samples, we use the latest technology to make the process as comfortable as possible. Our treatment plans emphasize lifestyle modifications, diet, and medication — not painful procedures.",
+        "Many clinics provide only partial care. Kins Diabetes offers a complete solution: tests, expert doctors, counseling, diet plans, medications, continuous glucose monitoring (CGM) and digital support—all under one roof in one day.",
     },
     {
-      question: "How often will I need to visit the clinic?",
+      question: "I feel stressed and demotivated managing diabetes. Will anyone support me?",
       answer:
-        "Initially, we recommend bi-weekly visits for the first month to closely monitor your progress. Once your condition stabilizes, monthly follow-ups are typically sufficient. However, we also offer teleconsultations for your convenience, reducing the need for frequent physical visits.",
+        "Yes. Our counseling and digital care program provide guidance, motivation, and progress tracking. You’re never alone in your diabetes journey.",
     },
     {
-      question: "Will insurance cover the treatment costs?",
+      question: "I am worried about following the diet or exercise plan.",
       answer:
-        "We work with most major insurance providers and can help you understand your coverage. Our team will assist you with the paperwork and claims process. We also offer flexible payment plans to ensure cost is never a barrier to getting the care you deserve.",
+        "Our plans are customized to your routine, food habits, and lifestyle. We provide step-by-step guidance and digital tools to help you stay on track.",
     },
     {
-      question: "Can family members attend consultations?",
+      question: "Can my family be involved in my care?",
       answer:
-        "Absolutely! We encourage family involvement in your treatment journey. Having your loved ones understand your condition helps create a supportive environment at home. Family members are always welcome during consultations and can participate in our diabetes education programs.",
+        "Yes. Family participation is encouraged so your loved ones understand your condition and support your lifestyle changes.",
     },
     {
-      question: "What makes your approach different from other clinics?",
+      question: "I am worried about taking too many medicines. Will Kins Diabetes just prescribe more?",
       answer:
-        "We combine advanced medical care with emotional support. Our team doesn't just focus on your blood sugar numbers — we care about your quality of life. From nutrition counseling to mental wellness support, we address every aspect of living well with diabetes.",
+        "No. We focus on personalized care. Medicines are only prescribed if needed, and our diet, lifestyle, and digital program often help reduce dependence on medicines.",
     },
+     {
+      question: "Do you offer follow-up consultations?",
+      answer:
+        "Yes, we schedule regular follow-ups to track your progress and adjust your care plan.",
+    },
+     {
+      question: "I live far from the clinic. Is it worth traveling for just one visit?",
+      answer:
+        "Yes. One visit to Kins Diabetes saves multiple trips, time, and confusion. Everything you need—tests, doctor advice, counseling, and diet planning—is done in just 7 hours.",
+    }
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
