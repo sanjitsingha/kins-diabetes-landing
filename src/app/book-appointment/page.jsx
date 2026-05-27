@@ -27,8 +27,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { supabase } from "@/lib/supabase";
 // ─── Data ────────────────────────────────────────────────────────────────────
+
+
 
 const SERVICES = [
   {
@@ -131,6 +133,8 @@ export default function BookAppointmentPage() {
   });
   const [errors, setErrors]     = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -138,26 +142,60 @@ export default function BookAppointmentPage() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: false }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {};
 
-    if (!form.name.trim())     newErrors.name     = true;
-    if (!form.city.trim())     newErrors.city     = true;
-    if (!form.diabetic)        newErrors.diabetic = true;
-    if (!form.service)         newErrors.service  = true;
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const m = form.mobile.trim();
-    if (!m || !/^\d{10}$/.test(m)) newErrors.mobile = true;
+  setServerError(null);
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  const newErrors = {};
 
+  if (!form.name.trim()) newErrors.name = true;
+  if (!form.city.trim()) newErrors.city = true;
+  if (!form.diabetic) newErrors.diabetic = true;
+  if (!form.service) newErrors.service = true;
+
+  const m = form.mobile.trim();
+
+  if (!m || !/^\d{10}$/.test(m)) {
+    newErrors.mobile = true;
+  }
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
+  setLoading(true);
+
+  const { error } = await supabase
+    .from("appointments")
+    .insert([
+      {
+        name: form.name,
+        mobile: form.mobile,
+        city: form.city,
+        diabetic: form.diabetic,
+        service: form.service,
+      },
+    ]);
+
+  setLoading(false);
+
+  if (!error) {
     setSubmitted(true);
-  };
 
+    setForm({
+      name: "",
+      mobile: "",
+      city: "",
+      diabetic: "",
+      service: "",
+    });
+  } else {
+    setServerError(error.message);
+  }
+};
   return (
     <div
       className="min-h-screen bg-[#faf8f4] text-[#0d1c2e]"
@@ -221,6 +259,12 @@ export default function BookAppointmentPage() {
               </h2>
 
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+
+                {serverError && (
+                  <div className="text-sm text-[#e5373d] bg-[#fff3f4] border border-[#f8d7da] rounded-md px-3 py-2">
+                    {serverError}
+                  </div>
+                )}
 
                 {/* Name */}
                 <div className="flex flex-col gap-1.5">
@@ -375,17 +419,14 @@ export default function BookAppointmentPage() {
                 {/* Submit */}
                 <button
                   type="submit"
-                  className="
-                    w-full h-[54px] bg-[#00b8d4] hover:bg-[#0099b2] text-white
-                    rounded-full text-[15.5px] font-semibold tracking-wide
-                    flex items-center justify-center gap-2 mt-1 cursor-pointer
-                    transition-all duration-200 hover:-translate-y-0.5
-                    shadow-[0_4px_20px_rgba(0,184,212,0.3)]
-                    hover:shadow-[0_6px_28px_rgba(0,184,212,0.4)]
-                    active:translate-y-0
-                  "
+                  disabled={loading}
+                  className={[
+                    "w-full h-[54px] rounded-full text-[15.5px] font-semibold tracking-wide flex items-center justify-center gap-2 mt-1",
+                    loading ? "bg-[#9de6ee] text-white cursor-wait" : "bg-[#00b8d4] hover:bg-[#0099b2] text-white",
+                    "transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(0,184,212,0.3)] hover:shadow-[0_6px_28px_rgba(0,184,212,0.4)] active:translate-y-0",
+                  ].join(" ")}
                 >
-                  Book My Free Counselling <span className="text-[17px] leading-none">→</span>
+                  {loading ? 'Sending...' : 'Book My Free Counselling'} <span className="text-[17px] leading-none">→</span>
                 </button>
 
                 {/* Callback note */}
