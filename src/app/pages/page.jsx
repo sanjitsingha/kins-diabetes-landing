@@ -6,6 +6,7 @@ import Stats from '../components/lp-1/stats';
 import ProblemSection from '../components/lp-1/problem';
 import PatientStories from '../components/lp-1/patient_stories';
 import Navbar from '../components/lp-1/navbar';
+import PackageCard from '../components/lp-1/package_card';
 // ─── SVG Icon Component ───────────────────────────────────────────────────────
 const icons = {
     check: (
@@ -710,85 +711,8 @@ export default function DiabetesCounsellingPage() {
 
                 <PatientStories />
                 {/* ─── PACKAGES ───────────────────────────────────────────────────── */}
-                <section className="py-24 bg-[#f4f8fb]">
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
-                            <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Health check-up plans
-                            </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Choose the right plan for your diabetes journey.</h2>
-                            <p className="text-[#5a7184]">From basic screening to comprehensive monitoring — a plan built for every need and every stage.</p>
-                        </div>
-
-                        <div className="h-scroll">
-                            {/* Executive */}
-                            <div className="flex-shrink-0 w-64 rounded-xl border border-[#FFDA99] bg-gradient-to-br from-[#FEF7DE] to-[#FFF7E8] p-6 flex flex-col">
-                                <div className="w-10 h-10 rounded-xl bg-[#FFDA99] flex items-center justify-center text-[#b25a13] mb-5">
-                                    <Icon name="package" size={22} />
-                                </div>
-                                <h3 className="font-serif text-xl text-[#0d1b2a] mb-1.5">Executive Profile</h3>
-                                <p className="text-[#5a7184] text-sm mb-5">First-time check or annual health review</p>
-                                <ul className="space-y-2.5 flex-1">
-                                    {['Diabetes', 'Thyroid', 'Liver', 'Kidney', 'Anemia', 'Blood Grouping', 'Radiology'].map((item) => (
-                                        <li key={item} className="flex items-center gap-2 text-sm text-[#1e2d3d]">
-                                            <span className="w-4 h-4 rounded-full bg-[#FFDA99] flex items-center justify-center flex-shrink-0">
-                                                <Icon name="check" size={10} strokeWidth={3} />
-                                            </span>
-                                            {item}
-                                        </li>
-                                    ))}
-                                    <li className="text-sm text-[#12a4dd] underline mt-2">+5 More Tests</li>
-                                </ul>
-                                <a href="#book" className="mt-8 block text-center bg-[#FFDA99] text-[#333] font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#f5c97c] transition-colors">
-                                    Know More →
-                                </a>
-                            </div>
-
-                            {/* Comprehensive */}
-                            <div className="relative flex-shrink-0 w-64 rounded-xl border border-[#7dc791] bg-gradient-to-br from-[#E8F9F0] to-[#DBF5E8] p-6 flex flex-col">
-                                <div className="absolute -top-3 right-4 bg-[#ec1c36] text-white text-[10px] font-bold tracking-wide px-3 py-1 rounded-full">Most Popular</div>
-                                <div className="w-10 h-10 rounded-xl bg-[#7dc791] flex items-center justify-center text-[#1f7a4f] mb-5">
-                                    <Icon name="target" size={22} />
-                                </div>
-                                <h3 className="font-serif text-xl text-[#0d1b2a] mb-1.5">Comprehensive Profile</h3>
-                                <p className="text-[#5a7184] text-sm mb-5">Full diabetes monitoring panel</p>
-                                <ul className="space-y-2.5 flex-1">
-                                    {['Diabetes', 'Thyroid', 'Liver', 'Kidney', 'Anemia', 'Blood Grouping', 'Radiology'].map((item) => (
-                                        <li key={item} className="flex items-center gap-2 text-sm text-[#1e2d3d]">
-                                            <span className="w-4 h-4 rounded-full bg-[#7dc791] flex items-center justify-center flex-shrink-0">
-                                                <Icon name="check" size={10} strokeWidth={3} />
-                                            </span>
-                                            {item}
-                                        </li>
-                                    ))}
-                                    <li className="text-sm text-[#12a4dd] underline mt-2">+10 More Tests</li>
-                                </ul>
-                                <a href="#book" className="mt-8 block text-center bg-[#7dc791] text-[#333] font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#6ab880] transition-colors">
-                                    Know More →
-                                </a>
-                            </div>
-
-                            {/* Premium / Platinum / Master */}
-                            {[
-                                { icon: 'shield', title: 'Premium Profile', desc: 'Detailed organ function monitoring' },
-                                { icon: 'gem', title: 'Platinum Profile', desc: 'Diabetes + cardiac + kidney care' },
-                                { icon: 'crown', title: 'Master Profile', desc: 'Maximum coverage for complex or long-term cases' },
-                            ].map(({ icon, title, desc }) => (
-                                <div key={title} className="flex-shrink-0 w-64 rounded-xl border border-[#c8dde8] bg-white p-6 flex flex-col hover:-translate-y-1 hover:shadow-md transition-all duration-200">
-                                    <div className="w-10 h-10 rounded-xl bg-[#f0f9fe] text-[#12a4dd] flex items-center justify-center mb-5">
-                                        <Icon name={icon} size={22} />
-                                    </div>
-                                    <h3 className="font-serif text-xl text-[#0d1b2a] mb-1.5">{title}</h3>
-                                    <p className="text-[#5a7184] text-sm mb-auto pb-5">{desc}</p>
-                                    <a href="#book" className="block text-center border border-[#c8dde8] text-[#12a4dd] font-semibold px-4 py-2.5 rounded-full text-sm hover:bg-[#f0f9fe] hover:border-[#12a4dd] transition-colors">
-                                        Know More →
-                                    </a>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
+             
+<PackageCard/>
                 {/* ─── FAQ ────────────────────────────────────────────────────────── */}
                 <section className="py-24">
                     <div className="max-w-[1200px] mx-auto px-7">
