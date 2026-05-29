@@ -2,8 +2,15 @@
 
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from '../../context/LanguageContext'
+import { translations } from '../../i18n/translations'
+
+const ICONS = ['trendUp', 'help', 'tired', 'alert', 'pill', 'confused', 'shield']
+const TONES = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 
 const problem = () => {
+    const { lang } = useLanguage()
+    const tx = translations[lang].problems
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -248,11 +255,10 @@ const problem = () => {
                 {/* Heading */}
                 <div className="text-center max-w-3xl mx-auto mb-14">
                     <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                        Do you relate to any of these?
+                        {tx.eyebrow}
                     </span>
-
                     <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">
-                        We have helped thousands overcome exactly these struggles.
+                        {tx.h2}
                     </h2>
                 </div>
 
@@ -278,51 +284,14 @@ const problem = () => {
                     ref={scrollRef}
                     className="h-scroll cursor-grab overflow-x-auto -mx-5 px-5 py-2 flex gap-7 scroll-smooth"
                 >
-                    {[
-                        {
-                            tone: 'a',
-                            iconName: 'trendUp',
-                            title: 'Sugar levels stay high',
-                            description: 'Even after medicines, your HbA1c just doesn\'t come down.'
-                        },
-                        {
-                            tone: 'b',
-                            iconName: 'help',
-                            title: "Don't know which tests to do",
-                            description: 'Confused about what to check and how often.'
-                        },
-                        {
-                            tone: 'c',
-                            iconName: 'tired',
-                            title: 'Feeling tired, weak or unwell',
-                            description: 'Constant fatigue, frequent urination, or blurred vision.'
-                        },
-                        {
-                            tone: 'd',
-                            iconName: 'alert',
-                            title: 'Worried about complications',
-                            description: 'Fear of kidney, eye, heart or foot damage from diabetes.'
-                        },
-                        {
-                            tone: 'e',
-                            iconName: 'pill',
-                            title: 'Only medicines, no guidance',
-                            description: "Doctors prescribe but never explain what is actually happening."
-                        },
-                        {
-                            tone: 'f',
-                            iconName: 'confused',
-                            title: 'Newly diagnosed and confused',
-                            description: "Just found out you have diabetes and don't know where to start."
-                        },
-                        {
-                            tone: 'g',
-                            iconName: 'shield',
-                            title: 'Want to prevent it',
-                            description: 'Family history of diabetes — you want to act before it starts.'
-                        },
-                    ].map((p) => (
-                        <ProblemCard key={p.title} {...p} />
+                    {tx.cards.map((card, i) => (
+                        <ProblemCard
+                            key={i}
+                            tone={TONES[i]}
+                            iconName={ICONS[i]}
+                            title={card.title}
+                            description={card.desc}
+                        />
                     ))}
                 </div>
             </div>

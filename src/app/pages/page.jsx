@@ -2,11 +2,16 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Head from 'next/head';
+import { LanguageProvider, useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 import Stats from '../components/lp-1/stats';
 import ProblemSection from '../components/lp-1/problem';
 import PatientStories from '../components/lp-1/patient_stories';
 import Navbar from '../components/lp-1/navbar';
 import PackageCard from '../components/lp-1/package_card';
+import PatientsVideoTestimonial from '../components/lp-1/patientsTestimonial';
+import DoctorsVideo from '../components/lp-1/doctorsVideo';
+import GoogleReviews from '../components/lp-1/googleReviews';
 // ─── SVG Icon Component ───────────────────────────────────────────────────────
 const icons = {
     check: (
@@ -385,13 +390,16 @@ export default function DiabetesCounsellingPage() {
         setTimeout(() => { setSubmitted(false); setFormData({ name: '', phone: '', city: '', duration: '', help: '' }); }, 3200);
     };
 
+    const { lang } = useLanguage();
+    const tx = translations[lang];
+
     const journeySlides = [
-        { step: '1', tone: 'a', label: 'Personalised counselling', img: '/landing-page/patient-journey/step-01.webp' },
-        { step: '2', tone: 'b', label: 'Complete diabetes investigations', img: '/landing-page/patient-journey/step-02.webp' },
-        { step: '3', tone: 'c', label: 'Lifestyle modification session', img: '/landing-page/patient-journey/step-03.webp' },
-        { step: '4', tone: 'd', label: 'Expert doctor consultation', img: '/landing-page/patient-journey/step-04.webp' },
-        { step: '5', tone: 'e', label: 'Medication & Continuous Support', img: '/landing-page/patient-journey/step-05.webp' },
-    ];
+        { step: '1', tone: 'a', img: '/landing-page/patient-journey/step-01.webp' },
+        { step: '2', tone: 'b', img: '/landing-page/patient-journey/step-02.webp' },
+        { step: '3', tone: 'c', img: '/landing-page/patient-journey/step-03.webp' },
+        { step: '4', tone: 'd', img: '/landing-page/patient-journey/step-04.webp' },
+        { step: '5', tone: 'e', img: '/landing-page/patient-journey/step-05.webp' },
+    ].map((s, i) => ({ ...s, label: tx.journey.slides[i] }));
 
     const jvToneMap = {
         a: 'from-[#d6f0fb] to-[#9ed8f0]',
@@ -401,77 +409,23 @@ export default function DiabetesCounsellingPage() {
         e: 'from-[#d9f5e7] to-[#9ad8b8]',
     };
 
-    const stepCards = [
-        {
-            stepNum: '01', dataStep: '1', time: '8:30 AM – 09:30 AM · 1 hour', iconName: 'msgSquare',
-            title: 'Personalised counselling',
-            description: 'A dedicated diabetes counsellor sits with you — understanding your history, lifestyle, and health concerns. No rushing. No generic advice.',
-            bullets: ['Full medical & family history review', 'Lifestyle, diet & activity assessment', 'Concerns, fears & questions addressed', 'Personalised care plan designed'],
-        },
-        {
-            stepNum: '02', dataStep: '2', time: '09:30 AM – 12:30 PM · 3 hours', iconName: 'flask',
-            title: 'Complete diabetes investigations',
-            description: 'All your diabetes-related blood tests done in our NABL-certified lab — fast, accurate, and reviewed by experts.',
-            bullets: ['HbA1c & blood sugar profile', 'Lipid & cholesterol panel', 'Kidney & liver function tests', 'Same-day report turnaround'],
-        },
-        {
-            stepNum: '03', dataStep: '3', time: '11:00 AM – 12:00 PM · 1 hour', iconName: 'book',
-            title: 'Lifestyle modification session',
-            description: 'Understand exactly how your body works — knowledge that empowers real, lasting change in your daily life.',
-            bullets: ['How food affects your sugar', 'Stress, sleep & blood glucose', 'The role of physical activity', 'Reading your own lab reports'],
-        },
-        {
-            stepNum: '04', dataStep: '4', time: '1:30 PM – 3:00 PM · 1.5 hours', iconName: 'stethoscope',
-            title: 'Expert doctor consultation',
-            description: 'A specialist diabetologist reviews every report with you and designs a treatment plan built for your specific case.',
-            bullets: ['Detailed report-by-report walkthrough', 'Custom medication plan & dosing', 'Risk assessment & complication check', 'Every question answered'],
-        },
-        {
-            stepNum: '05', dataStep: '5', time: '3:00 PM – 4:00 PM · 1 hour', iconName: 'clipboard',
-            title: 'Medication & Continuous Support',
-            description: 'Your complete diabetes plan — written, explained and yours to keep forever.',
-            bullets: ['Written medication schedule', 'Customised diet chart', 'Daily activity & monitoring plan', 'Follow-up schedule with your doctor'],
-        },
-    ];
-
-    const compareRows = [
-        { feature: 'Complete care in one visit', kins: 'Done in 7 hours', other: 'Multiple visits needed' },
-        { feature: 'Dedicated diabetes counsellor', kins: '1-on-1 personal session', other: 'Rarely available' },
-        { feature: 'NABH accreditation', kins: "North Bengal's only", other: 'Not accredited' },
-        { feature: 'In-house NABL lab', kins: 'Certified, fast reports', other: 'Sent to outside labs' },
-        { feature: 'CGM device available', kins: 'Available in-house', other: 'Not available' },
-        { feature: 'Personalised diet plan', kins: 'Customised same day', other: 'Generic printed sheet' },
-        { feature: 'Diabetes education session', kins: 'Every patient, every visit', other: 'Not offered' },
-        { feature: 'Retina & foot screening', kins: 'Done in-house', other: 'Referred elsewhere' },
-        { feature: 'Lifestyle modification programme', kins: 'Structured programme', other: 'Not available' },
-    ];
-
-    const faqs = [
-        { q: 'Can diabetes be cured?', a: 'Diabetes cannot be cured, but it can be very effectively managed. With the right counselling, diet, lifestyle changes, and medical guidance, many of our patients have significantly reduced their medication dependency and live complication-free lives.' },
-        { q: 'Do I need to come fasting?', a: 'Yes. For accurate blood sugar and HbA1c testing, please come after an 8–10 hour fast. Our team will guide you on full preparation when they call to confirm your appointment.' },
-        { q: 'How long does one complete visit take?', a: 'A full visit at Kins Diabetes takes approximately 7 hours — from your first counselling session through to doctor consultation and your personal plan. Everything is done in one day. You leave with complete clarity.' },
-        { q: 'Is Kins Diabetes only for people who already have diabetes?', a: 'Not at all. We also help people with pre-diabetes, those with a strong family history of diabetes, and anyone who wants a preventive diabetes screening. Early detection changes everything.' },
-        { q: 'What will the cost be?', a: 'We offer multiple health check-up profiles at different price points depending on your specific needs. Our team will explain all options clearly when they call — no hidden costs, no pressure.' },
-        { q: 'Can I bring a family member with me?', a: 'Absolutely. We encourage family members to come along. Understanding diabetes together leads to much better lifestyle support at home.' },
-        { q: 'Do I need an appointment or can I walk in?', a: 'We strongly recommend booking in advance so our counsellors can be fully prepared for your visit and minimise your waiting time. Use the form on this page or call us directly on +91 97337 85000.' },
-    ];
+    const stepCards = tx.journey.steps.map((s, i) => ({
+        ...s, iconName: s.icon, dataStep: String(i + 1), onInView: handleStepInView,
+    }));
+    const compareRows = tx.compare.rows;
+    const faqs = tx.faq.items;
 
 
 
     return (
-        <>
+        <LanguageProvider>
             <Head>
                 <title>Kins Diabetes — North Bengal&apos;s Most Trusted Diabetes Centre</title>
                 <meta name="description" content="Complete diabetes care in one visit at North Bengal's only NABH-accredited diabetes centre. Tests, counselling, diet plan and doctor consultation under one roof in Siliguri." />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-                <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
             </Head>
 
             <style>{`
-        body { font-family: 'DM Sans', -apple-system, sans-serif; }
-        .font-serif { font-family: 'DM Serif Display', 'Times New Roman', serif; }
         .h-scroll { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 28px 28px; margin: 0 -28px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .h-scroll::-webkit-scrollbar { display: none; }
         .h-scroll > * { flex: 0 0 calc(33% - 12px); scroll-snap-align: start; min-width: 220px; }
@@ -496,21 +450,19 @@ export default function DiabetesCounsellingPage() {
                         <div className="grid md:grid-cols-[1.05fr_1fr] rounded-3xl overflow-hidden border border-[#c8dde8] min-h-[560px]" style={{ background: 'linear-gradient(135deg, #eaf6fc 0%, #f5fbfe 55%, #fef4f5 100%)' }}>
                             {/* Left */}
                             <div className="p-10 md:p-14 flex flex-col justify-center">
-                                <div className="flex flex-wrap gap-3 items-center mb-7">
-                                    <img src="/landing-page/nabh-logo.webp" alt="NABH" className="w-9 h-auto" />
+                                <div className=" flex gap-2 mb-8">
+                                    <img objectFit="contain" src="/landing-page/nabh-logo.webp" alt="NABH" className="w-9 h-auto" />
                                     <span className="inline-flex items-center px-4 py-1.5 bg-white border border-[#c8dde8] rounded-full text-sm font-medium text-[#1e2d3d]">
-                                        North Bengal&apos;s only NABH diabetes centre
+                                        {tx.hero.badge}
                                     </span>
                                 </div>
-                                <h1 className="font-serif text-4xl md:text-5xl leading-[1.05] text-[#0d1b2a] mb-2 tracking-tight">
-                                    Tired of managing<br />diabetes alone?
+                                <h1 className="font-serif text-3xl md:text-4xl leading-[1.35] text-[#12a4dd] mb-2 tracking-tight">
+                                    {tx.hero.h1_1}<br />{tx.hero.h1_2}
                                 </h1>
-                                <p className="text-lg font-medium text-[#12a4dd] mb-4">Stop worrying. Start managing — with a real diabetes plan.</p>
-                                <p className="text-[#5a7184] text-base max-w-lg mb-9">
-                                    Get expert care for your diabetes — tests, counselling, diet plan and doctor consultation — all in one day, under one roof in Siliguri.
-                                </p>
+                                <p className="text-2xl font-medium text-black mb-8">{tx.hero.sub}</p>
+                                <p className="text-[#5a7184] text-base max-w-lg mb-9">{tx.hero.desc}</p>
                                 <a href="#book" className="inline-flex items-center gap-2 bg-[#12a4dd] hover:bg-[#0b7aaa] text-white font-semibold text-base px-8 py-5 rounded-full transition-all shadow-[0_6px_18px_-6px_rgba(18,164,221,0.55)] w-fit">
-                                    Book My Free Counselling <Icon name="arrowRight" size={16} />
+                                    {tx.hero.cta} <Icon name="arrowRight" size={16} />
                                 </a>
                             </div>
                             {/* Right */}
@@ -529,19 +481,21 @@ export default function DiabetesCounsellingPage() {
                         <Stats />
                     </div>
                 </section>
+<PatientsVideoTestimonial/>
 
                 {/* ─── PROBLEMS ───────────────────────────────────────────────────── */}
 
                 <ProblemSection />
+                <DoctorsVideo/>
                 {/* ─── PATIENT JOURNEY ────────────────────────────────────────────── */}
                 <section className="py-24">
                     <div className="max-w-[1200px] mx-auto px-7">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Your Journey Starts Here
+                                {tx.journey.eyebrow}
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">From struggling alone to having a complete plan.</h2>
-                            <p className="text-[#5a7184]">Everything sorted under one roof — in one focused, dedicated day.</p>
+                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.journey.h2}</h2>
+                            <p className="text-[#5a7184]">{tx.journey.sub}</p>
                         </div>
 
                         <div className="grid md:grid-cols-[40%_60%] gap-12 items-start">
@@ -558,7 +512,7 @@ export default function DiabetesCounsellingPage() {
                                                 <img src={slide.img} alt={slide.label} className="relative w-full h-full object-cover" />
                                             </div>
                                             <div className="bg-white/95 backdrop-blur-sm px-6 py-5 border-t border-[#c8dde8]">
-                                                <div className="text-[11px] font-bold tracking-widest uppercase text-[#12a4dd] mb-1">Step {String(slide.step).padStart(2, '0')}</div>
+                                                <div className="text-[11px] font-bold tracking-widest uppercase text-[#12a4dd] mb-1">{tx.journey.stepLabel} {String(slide.step).padStart(2, '0')}</div>
                                                 <strong className="font-serif text-lg text-[#0d1b2a] leading-tight">{slide.label}</strong>
                                             </div>
                                         </div>
@@ -581,10 +535,10 @@ export default function DiabetesCounsellingPage() {
                     <div className="max-w-[1200px] mx-auto px-7">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Complete Diabetes Solution
+                                {tx.services.eyebrow}
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Stop running between clinics — everything you need is right here.</h2>
-                            <p className="text-[#5a7184]">From screening to specialist care, every service you need is available in-house.</p>
+                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.services.h2}</h2>
+                            <p className="text-[#5a7184]">{tx.services.sub}</p>
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[215px] gap-4">
@@ -596,12 +550,12 @@ export default function DiabetesCounsellingPage() {
                                 </div>
                                 <div className="p-7 bg-gradient-to-t from-black/20 to-transparent">
                                     <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase opacity-85 mb-3">
-                                        <span className="bento-dot w-2 h-2 rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.2)]" /> Most requested
+                                        <span className="bento-dot w-2 h-2 rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.2)]" /> {tx.services.featuredBadge}
                                     </div>
-                                    <h3 className="font-serif text-3xl text-white mb-2">Doctor&apos;s consultation</h3>
-                                    <p className="text-white/90 text-sm mb-4">Expert diabetologists and endocrinologists available 6 days a week — every plan personalised to your case.</p>
+                                    <h3 className="font-serif text-3xl text-white mb-2">{tx.services.featuredTitle}</h3>
+                                    <p className="text-white/90 text-sm mb-4">{tx.services.featuredDesc}</p>
                                     <div className="flex flex-wrap gap-2 text-sm font-medium">
-                                        {['Hassle-free appointments', 'Specialist diabetologists'].map((t) => (
+                                        {tx.services.featuredTags.map((t) => (
                                             <span key={t} className="inline-flex items-center gap-1.5 bg-white/12 px-3 py-1.5 rounded-full text-xs">
                                                 <Icon name="check" size={12} className="bg-white text-[#0b7aaa] rounded-full p-[2px]" strokeWidth={3} /> {t}
                                             </span>
@@ -612,15 +566,16 @@ export default function DiabetesCounsellingPage() {
 
                             {/* Small cards */}
                             {[
-                                { tone: 'white', icon: 'flask', title: 'Advanced Diagnostics', desc: 'NABL-certified in-house lab — accurate results, same day, no outside lab needed.' },
-                                { tone: 'amber', icon: 'msgSquare', title: 'Patient counselling', desc: 'A dedicated counsellor who understands your life — and builds a plan that actually fits it.' },
-                                { tone: 'mint', icon: 'leaf', title: 'Diet & nutrition', desc: 'A diet plan built around your food, your budget and your sugar — not a generic printed chart.' },
-                                { tone: 'white', icon: 'book', title: 'Diabetes education', desc: 'Understand your diabetes — food, stress and sleep explained.' },
-                                { tone: 'white', icon: 'eye', title: 'Retina screening', desc: 'Early detection of diabetic eye complications.' },
-                                { tone: 'white', icon: 'foot', title: 'Diabetic foot care', desc: 'Specialised foot exam to prevent ulcers and nerve damage.' },
-                                { tone: 'rose', icon: 'heartPulse', title: 'Cardiac care', desc: 'Heart risk assessment — because sugar affects the heart.' },
-                                { tone: 'dark', icon: 'monitor', title: 'CGM monitoring', desc: 'Continuous Glucose Monitoring — real-time sugar tracking.', badge: 'NEW' },
-                            ].map(({ tone, icon, title, desc, badge }) => {
+                                { tone: 'white', icon: 'flask' },
+                                { tone: 'amber', icon: 'msgSquare' },
+                                { tone: 'mint',  icon: 'leaf' },
+                                { tone: 'white', icon: 'book' },
+                                { tone: 'white', icon: 'eye' },
+                                { tone: 'white', icon: 'foot' },
+                                { tone: 'rose',  icon: 'heartPulse' },
+                                { tone: 'dark',  icon: 'monitor', badge: 'NEW' },
+                            ].map(({ tone, icon, badge }, idx) => {
+                                const { title, desc } = tx.services.items[idx];
                                 const toneMap = {
                                     white: 'bg-white border-[#c8dde8]',
                                     amber: 'bg-gradient-to-b from-[#fef9eb] to-[#fef3c7] border-[#fde9a6]',
@@ -651,21 +606,21 @@ export default function DiabetesCounsellingPage() {
                     <div className="max-w-[1200px] mx-auto px-7">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Why choose us
+                                {tx.compare.eyebrow}
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Kins Diabetes vs. a regular clinic — the difference is clear.</h2>
-                            <p className="text-[#5a7184]">Most clinics give you a prescription and send you home. We build you a complete system.</p>
+                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.compare.h2}</h2>
+                            <p className="text-[#5a7184]">{tx.compare.sub}</p>
                         </div>
 
                         <div className="max-w-4xl mx-auto bg-white rounded-2xl overflow-hidden border border-[#c8dde8] shadow-md">
                             {/* Head */}
                             <div className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8]">
-                                <div className="px-6 py-5 font-bold text-sm">Feature</div>
+                                <div className="px-6 py-5 font-bold text-sm"></div>
                                 <div className="px-6 py-5 text-center bg-[#12a4dd] text-white font-bold text-sm">
-                                    Kins Diabetes
-                                    <span className="block text-[11px] font-medium opacity-85 mt-1 tracking-wide uppercase">NABH · NABL · 14+ Years</span>
+                                    {tx.compare.colKins}
+                                    <span className="block text-[11px] font-medium opacity-85 mt-1 tracking-wide uppercase">{tx.compare.kinsTag}</span>
                                 </div>
-                                <div className="px-6 py-5 text-center bg-[#eef2f5] text-[#5a7184] font-bold text-sm">Regular Clinic</div>
+                                <div className="px-6 py-5 text-center bg-[#eef2f5] text-[#5a7184] font-bold text-sm">{tx.compare.colOther}</div>
                             </div>
                             {compareRows.map(({ feature, kins, other }) => (
                                 <div key={feature} className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8] last:border-0">
@@ -691,10 +646,10 @@ export default function DiabetesCounsellingPage() {
                     <div className="max-w-[1200px] mx-auto px-7">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Your care team
+                                {tx.doctors.eyebrow}
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Expert doctors. Real experience. Right here in Siliguri.</h2>
-                            <p className="text-[#5a7184]">Our specialists have dedicated their careers to diabetes — so you get the most informed, experienced guidance possible.</p>
+                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.doctors.h2}</h2>
+                            <p className="text-[#5a7184]">{tx.doctors.sub}</p>
                         </div>
                         <div className="h-scroll">
                             {[
@@ -711,16 +666,16 @@ export default function DiabetesCounsellingPage() {
 
                 <PatientStories />
                 {/* ─── PACKAGES ───────────────────────────────────────────────────── */}
-             
-<PackageCard/>
+<GoogleReviews/>
+                {/* <PackageCard/> */}
                 {/* ─── FAQ ────────────────────────────────────────────────────────── */}
                 <section className="py-24">
                     <div className="max-w-[1200px] mx-auto px-7">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                Common questions
+                                {tx.faq.eyebrow}
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">Everything you want to know — before you decide.</h2>
+                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">{tx.faq.h2}</h2>
                         </div>
                         <div className="max-w-[820px] mx-auto space-y-3.5">
                             {faqs.map(({ q, a }) => <FaqItem key={q} question={q} answer={a} />)}
@@ -735,15 +690,17 @@ export default function DiabetesCounsellingPage() {
                         <div className="grid md:grid-cols-2 gap-14 items-start">
                             {/* Location */}
                             <div>
-                                <h3 className="font-serif text-4xl text-white mb-3 leading-tight">Visit us in Siliguri.</h3>
-                                <p className="text-white/80 mb-8">Walk in for a free consultation, or call us — we&apos;ll be glad to help.</p>
+                                <h3 className="font-serif text-4xl text-white mb-3 leading-tight">{tx.contact.h3}</h3>
+                                <p className="text-white/80 mb-8">{tx.contact.sub}</p>
                                 <ul className="space-y-6 mb-7">
                                     {[
-                                        { icon: 'pin', label: 'Address', value: '1st Floor, Jhankar More, Golden Heights Building, Burdwan Road, Ward 4, Mahananda Para, Siliguri, West Bengal — 734005' },
-                                        { icon: 'clock', label: 'Hours', value: 'Monday – Saturday · 8:30 AM – 5:00 PM' },
-                                        { icon: 'phone', label: 'Call us', value: '+91 97337 85000', href: 'tel:+919733785000' },
-                                        { icon: 'chat', label: 'WhatsApp', value: '+91 97337 85000', href: 'https://wa.me/919733785000' },
-                                    ].map(({ icon, label, value, href }) => (
+                                        { icon: 'pin',   value: '1st Floor, Jhankar More, Golden Heights Building, Burdwan Road, Ward 4, Mahananda Para, Siliguri, West Bengal — 734005' },
+                                        { icon: 'clock', value: 'Monday – Saturday · 8:30 AM – 5:00 PM' },
+                                        { icon: 'phone', value: '+91 97337 85000', href: 'tel:+919733785000' },
+                                        { icon: 'chat',  value: '+91 97337 85000', href: 'https://wa.me/919733785000' },
+                                    ].map(({ icon, value, href }, i) => {
+                                        const label = tx.contact.labels[i];
+                                        return (
                                         <li key={label} className="grid gap-3.5 items-start" style={{ gridTemplateColumns: '44px 1fr' }}>
                                             <span className="w-11 h-11 rounded-xl bg-white/12 text-white flex items-center justify-center flex-shrink-0">
                                                 <Icon name={icon} size={22} />
@@ -757,11 +714,12 @@ export default function DiabetesCounsellingPage() {
                                                 )}
                                             </div>
                                         </li>
-                                    ))}
+                                        );
+                                    })}
                                 </ul>
 
                                 <div className="mt-6 text-sm text-white/85 border-t border-white/15 pt-5 leading-relaxed">
-                                    NABH Accredited · NABL Certified · 14+ Years · North Bengal&apos;s Only Specialised Diabetes Centre
+                                    {tx.contact.accreditation}
                                 </div>
                             </div>
 
@@ -781,6 +739,6 @@ export default function DiabetesCounsellingPage() {
 
 
             </div>
-        </>
+        </LanguageProvider>
     );
 }

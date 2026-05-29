@@ -1,5 +1,7 @@
 'use client'
 import React, { useEffect, useRef } from 'react';
+import { useLanguage } from '../../context/LanguageContext'
+import { translations } from '../../i18n/translations'
 
 /* ─────────────────────────────────────────────────────────
    Inline styles (no extra CSS file needed — drop-in ready)
@@ -53,7 +55,7 @@ const S = {
     marginRight: 10,
   },
   h2: {
-    fontFamily: '"DM Serif Display", serif',
+    fontFamily: 'var(--font-outfit), sans-serif',
     fontSize: 'clamp(1.8rem, 3.4vw, 2.8rem)',
     fontWeight: 400,
     color: '#0d1b2a',
@@ -111,7 +113,7 @@ const S = {
     position: 'relative',
   },
   coreTitle: {
-    fontFamily: '"DM Serif Display", serif',
+    fontFamily: 'var(--font-outfit), sans-serif',
     fontWeight: 400,
     fontSize: '2.2rem',
     color: '#0d1b2a',
@@ -279,6 +281,8 @@ const CARDS = [
    Component
    ───────────────────────────────────────────────────────── */
 export default function PatientStories() {
+  const { lang } = useLanguage()
+  const tx = translations[lang].patientStories
   const sectionRef  = useRef(null);
   const cardRefs    = useRef([]);
   const coreRef     = useRef(null);
@@ -377,7 +381,7 @@ export default function PatientStories() {
             <div className='' style={S.sectionHead}>
               <div style={S.eyebrow}>
                 <span style={S.eyebrowBar} />
-                Patient stories
+                {tx.eyebrow}
               </div>
               
             </div>
@@ -413,11 +417,8 @@ export default function PatientStories() {
                     borderRadius: '50%', filter: 'blur(2px)',
                   }} />
                 </div>
-                <h3 style={S.coreTitle}>Real Patients, Real Stories.</h3>
-                <p style={S.coreSub}>
-                  Guided by specialist doctors, supported by counsellors,
-                  and powered by personalised, evidence-based care.
-                </p>
+                <h3 style={S.coreTitle}>{tx.coreTitle}</h3>
+                <p style={S.coreSub}>{tx.coreSub}</p>
               </div>
 
               {/* Story cards */}
@@ -455,7 +456,7 @@ export default function PatientStories() {
 
               {/* Scroll hint */}
               <div ref={hintRef} style={S.hint}>
-                <span>Scroll to reveal</span>
+                <span>{tx.scrollHint}</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                   style={{ animation: 'hint-bounce 1.8s ease-in-out infinite' }}>
@@ -474,7 +475,7 @@ export default function PatientStories() {
               >
                 <span style={S.gIcon}>G</span>
                 <span style={S.pillText}>
-                  <strong>4.8 / 5</strong> on Google · 1,000+ Reviews
+                  {tx.rating}
                 </span>
               </a>
             </div>

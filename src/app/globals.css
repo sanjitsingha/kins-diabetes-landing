@@ -8,8 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-outfit);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,5 +20,27 @@
 }
 
 body {
-  font-family: "Nunito", Helvetica, sans-serif;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 400;
+}
+
+/* Outfit as display/heading font — medium-bold weight + tight tracking */
+.font-serif {
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Swiper pagination dots */
+.swiper-dots .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #cbd5e1;
+  opacity: 1;
+  transition: all 0.3s;
+}
+.swiper-dots .swiper-pagination-bullet-active {
+  background: #12a4dd;
+  width: 20px;
+  border-radius: 4px;
 }
