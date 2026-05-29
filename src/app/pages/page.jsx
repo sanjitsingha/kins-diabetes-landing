@@ -12,6 +12,8 @@ import PackageCard from '../components/lp-1/package_card';
 import PatientsVideoTestimonial from '../components/lp-1/patientsTestimonial';
 import DoctorsVideo from '../components/lp-1/doctorsVideo';
 import GoogleReviews from '../components/lp-1/googleReviews';
+import HeroSection from '../components/lp-1/hero';
+import ServicesSection from '../components/lp-1/servicesSection';
 // ─── SVG Icon Component ───────────────────────────────────────────────────────
 const icons = {
     check: (
@@ -445,165 +447,20 @@ export default function DiabetesCounsellingPage() {
                 <Navbar />
 
                 {/* ─── HERO ───────────────────────────────────────────────────────── */}
-                <section id="top" className="py-10 pt-30 pb-20 bg-white">
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="grid md:grid-cols-[1.05fr_1fr] rounded-3xl overflow-hidden border border-[#c8dde8] min-h-[560px]" style={{ background: 'linear-gradient(135deg, #eaf6fc 0%, #f5fbfe 55%, #fef4f5 100%)' }}>
-                            {/* Left */}
-                            <div className="p-10 md:p-14 flex flex-col justify-center">
-                                <div className=" flex gap-2 mb-8">
-                                    <img objectFit="contain" src="/landing-page/nabh-logo.webp" alt="NABH" className="w-9 h-auto" />
-                                    <span className="inline-flex items-center px-4 py-1.5 bg-white border border-[#c8dde8] rounded-full text-sm font-medium text-[#1e2d3d]">
-                                        {tx.hero.badge}
-                                    </span>
-                                </div>
-                                <h1 className="font-serif text-3xl md:text-4xl leading-[1.35] text-[#12a4dd] mb-2 tracking-tight">
-                                    {tx.hero.h1_1}<br />{tx.hero.h1_2}
-                                </h1>
-                                <p className="text-2xl font-medium text-black mb-8">{tx.hero.sub}</p>
-                                <p className="text-[#5a7184] text-base max-w-lg mb-9">{tx.hero.desc}</p>
-                                <a href="#book" className="inline-flex items-center gap-2 bg-[#12a4dd] hover:bg-[#0b7aaa] text-white font-semibold text-base px-8 py-5 rounded-full transition-all shadow-[0_6px_18px_-6px_rgba(18,164,221,0.55)] w-fit">
-                                    {tx.hero.cta} <Icon name="arrowRight" size={16} />
-                                </a>
-                            </div>
-                            {/* Right */}
-                            <div className="p-5 pl-0 flex items-stretch">
-                                <div className="relative w-full rounded-2xl overflow-hidden min-h-[320px] bg-gradient-to-br from-[#d6f0fb] to-[#eaf6fc] border border-white/60">
-                                    <img
-                                        src="/landing-page/hero-image-right.webp"
-                                        alt="Clinic"
-                                        className="w-full h-full object-cover grayscale hover:grayscale-0 hover:scale-[1.02] transition-all duration-300"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Stats Row */}
+               <HeroSection/>
                         <Stats />
-                    </div>
-                </section>
 <PatientsVideoTestimonial/>
 
                 {/* ─── PROBLEMS ───────────────────────────────────────────────────── */}
 
                 <ProblemSection />
                 <DoctorsVideo/>
-                {/* ─── PATIENT JOURNEY ────────────────────────────────────────────── */}
-                <section className="py-24">
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
-                            <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                {tx.journey.eyebrow}
-                            </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.journey.h2}</h2>
-                            <p className="text-[#5a7184]">{tx.journey.sub}</p>
-                        </div>
-
-                        <div className="grid md:grid-cols-[40%_60%] gap-12 items-start">
-                            {/* Sticky visual */}
-                            <div className="hidden md:block sticky top-28 h-[540px]">
-                                <div className="relative w-full h-full rounded-2xl overflow-hidden border border-[#c8dde8] shadow-md bg-[#f0f9fe]">
-                                    {journeySlides.map((slide) => (
-                                        <div
-                                            key={slide.step}
-                                            className={`absolute inset-0 flex flex-col transition-opacity duration-500 ${activeStep === slide.step ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                                        >
-                                            <div className={`flex-1 bg-gradient-to-b ${jvToneMap[slide.tone]} flex items-center justify-center relative overflow-hidden`}>
-                                                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 80% 20%, rgba(255,255,255,0.55), transparent 55%), radial-gradient(circle at 20% 80%, rgba(255,255,255,0.35), transparent 50%)' }} />
-                                                <img src={slide.img} alt={slide.label} className="relative w-full h-full object-cover" />
-                                            </div>
-                                            <div className="bg-white/95 backdrop-blur-sm px-6 py-5 border-t border-[#c8dde8]">
-                                                <div className="text-[11px] font-bold tracking-widest uppercase text-[#12a4dd] mb-1">{tx.journey.stepLabel} {String(slide.step).padStart(2, '0')}</div>
-                                                <strong className="font-serif text-lg text-[#0d1b2a] leading-tight">{slide.label}</strong>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Scrolling steps */}
-                            <div className="flex flex-col gap-8">
-                                {stepCards.map((card) => (
-                                    <StepCard key={card.dataStep} {...card} onInView={handleStepInView} />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ─── SERVICES BENTO ─────────────────────────────────────────────── */}
-                <section className="py-24 bg-[#f4f8fb]">
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
-                            <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                                {tx.services.eyebrow}
-                            </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">{tx.services.h2}</h2>
-                            <p className="text-[#5a7184]">{tx.services.sub}</p>
-                        </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[215px] gap-4">
-                            {/* Featured 2x2 */}
-                            <div className="col-span-2 row-span-2 rounded-[18px] overflow-hidden border border-[#0b7aaa] bg-gradient-to-b from-[#12a4dd] to-[#0b7aaa] text-white flex flex-col">
-                                <div className="flex-1 relative flex items-center justify-center overflow-hidden min-h-[180px]">
-                                    <Icon name="stethoscope" size={220} className="opacity-[0.18]" strokeWidth={1} />
-                                    <div className="absolute top-[-60px] right-[-60px] w-[220px] h-[220px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%)' }} />
-                                </div>
-                                <div className="p-7 bg-gradient-to-t from-black/20 to-transparent">
-                                    <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase opacity-85 mb-3">
-                                        <span className="bento-dot w-2 h-2 rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.2)]" /> {tx.services.featuredBadge}
-                                    </div>
-                                    <h3 className="font-serif text-3xl text-white mb-2">{tx.services.featuredTitle}</h3>
-                                    <p className="text-white/90 text-sm mb-4">{tx.services.featuredDesc}</p>
-                                    <div className="flex flex-wrap gap-2 text-sm font-medium">
-                                        {tx.services.featuredTags.map((t) => (
-                                            <span key={t} className="inline-flex items-center gap-1.5 bg-white/12 px-3 py-1.5 rounded-full text-xs">
-                                                <Icon name="check" size={12} className="bg-white text-[#0b7aaa] rounded-full p-[2px]" strokeWidth={3} /> {t}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Small cards */}
-                            {[
-                                { tone: 'white', icon: 'flask' },
-                                { tone: 'amber', icon: 'msgSquare' },
-                                { tone: 'mint',  icon: 'leaf' },
-                                { tone: 'white', icon: 'book' },
-                                { tone: 'white', icon: 'eye' },
-                                { tone: 'white', icon: 'foot' },
-                                { tone: 'rose',  icon: 'heartPulse' },
-                                { tone: 'dark',  icon: 'monitor', badge: 'NEW' },
-                            ].map(({ tone, icon, badge }, idx) => {
-                                const { title, desc } = tx.services.items[idx];
-                                const toneMap = {
-                                    white: 'bg-white border-[#c8dde8]',
-                                    amber: 'bg-gradient-to-b from-[#fef9eb] to-[#fef3c7] border-[#fde9a6]',
-                                    mint: 'bg-gradient-to-b from-[#eefaf3] to-[#d9f5e7] border-[#b6e7cc]',
-                                    rose: 'bg-gradient-to-b from-[#fef0f2] to-[#fde8eb] border-[#fac4ce]',
-                                    dark: 'bg-gradient-to-b from-[#1a3a52] to-[#0d1b2a] border-[#234862]',
-                                };
-                                const iconColor = { white: 'bg-[#f0f9fe] text-[#12a4dd]', amber: 'bg-white/70 text-[#b25a13]', mint: 'bg-white/70 text-[#1f7a4f]', rose: 'bg-white/70 text-[#ec1c36]', dark: 'bg-white/12 text-[#12a4dd]' };
-                                const textColor = tone === 'dark' ? 'text-white' : 'text-[#0d1b2a]';
-                                const descColor = tone === 'dark' ? 'text-white/70' : 'text-[#5a7184]';
-                                return (
-                                    <div key={title} className={`relative rounded-[18px] border p-5 overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200 flex flex-col ${toneMap[tone]}`}>
-                                        {badge && <span className="absolute top-4 right-4 bg-[#ec1c36] text-white text-[9.5px] font-bold tracking-wide px-2 py-0.5 rounded-full">{badge}</span>}
-                                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${iconColor[tone]}`}>
-                                            <Icon name={icon} size={22} />
-                                        </div>
-                                        <h3 className={`font-serif text-lg leading-tight mb-1.5 ${textColor}`}>{title}</h3>
-                                        <p className={`text-sm leading-snug ${descColor}`}>{desc}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
+              
+<ServicesSection/>
 
                 {/* ─── COMPARISON TABLE ───────────────────────────────────────────── */}
                 <section className="py-24">
-                    <div className="max-w-[1200px] mx-auto px-7">
+                    <div className="max-w-[1200px] mx-auto px-4">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 {tx.compare.eyebrow}
@@ -643,7 +500,7 @@ export default function DiabetesCounsellingPage() {
 
                 {/* ─── DOCTORS ────────────────────────────────────────────────────── */}
                 <section className="py-24 bg-[#f0f9fe]">
-                    <div className="max-w-[1200px] mx-auto px-7">
+                    <div className="max-w-[1200px] mx-auto px-4">
                         <div className="text-center max-w-3xl mx-auto mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 {tx.doctors.eyebrow}
