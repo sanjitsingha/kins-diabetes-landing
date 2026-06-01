@@ -4,8 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { useLanguage } from '../../context/LanguageContext'
-import { translations } from '../../i18n/translations'
 
 const VIDEOS = [
   '/patientsVideo/PTV1.mp4',
@@ -28,7 +26,7 @@ const VideoCard = ({ src }) => {
   }
 
   return (
-    <div className="relative w-full rounded-xl overflow-hidden - bg-black aspect-9/16">
+    <div className="relative w-full rounded-xl overflow-hidden bg-black aspect-9/16">
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
@@ -40,7 +38,6 @@ const VideoCard = ({ src }) => {
         <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-
       <button
         onClick={togglePlay}
         aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -68,8 +65,6 @@ const VideoCard = ({ src }) => {
 }
 
 const PatientsTestimonial = () => {
-  const { lang } = useLanguage()
-  const tx = translations[lang].patientsTestimonial
   const swiperRef = useRef(null)
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
@@ -82,35 +77,21 @@ const PatientsTestimonial = () => {
   return (
     <div className="w-full bg-white">
       <div className="max-w-[1200px] mx-auto px-7 md:px-0 py-14 md:py-24">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
+            Patient Videos
+          </span>
+          <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">
+            We have helped thousands overcome exactly these struggles.
+          </h2>
+        </div>
 
-       <div className="text-center max-w-3xl mx-auto mb-14">
-                    <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-                        {tx.eyebrow}
-                    </span>
-                    <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">
-                        {tx.h2}
-                    </h2>
-                </div>
-
-        {/*
-          On mobile: no horizontal padding, arrows hidden — touch swipe works natively.
-          On desktop (md+): px-14 gives room for the arrows to sit outside the swiper.
-        */}
         <div className="relative md:px-14">
-
-          {/* Left arrow — desktop only */}
           <button
             onClick={() => swiperRef.current?.slidePrev()}
             disabled={isBeginning}
             aria-label="Previous"
-            className="
-              hidden md:flex
-              absolute left-0 top-1/2 -translate-y-1/2 z-10
-              w-10 h-10 rounded-full bg-white shadow-md border border-gray-200
-              items-center justify-center
-              transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg
-              disabled:opacity-30 disabled:cursor-not-allowed
-            "
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
@@ -119,18 +100,12 @@ const PatientsTestimonial = () => {
 
           <Swiper
             modules={[Pagination]}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper
-              updateNavState(swiper)
-            }}
+            onSwiper={(swiper) => { swiperRef.current = swiper; updateNavState(swiper) }}
             onSlideChange={updateNavState}
             spaceBetween={20}
             slidesPerView={1.25}
             grabCursor
-            pagination={{
-              clickable: false,
-              
-            }}
+            pagination={{ clickable: false }}
             breakpoints={{
               480: { slidesPerView: 2, spaceBetween: 16 },
               768: { slidesPerView: 3, spaceBetween: 20 },
@@ -143,28 +118,17 @@ const PatientsTestimonial = () => {
             ))}
           </Swiper>
 
-          {/* Right arrow — desktop only */}
           <button
             onClick={() => swiperRef.current?.slideNext()}
             disabled={isEnd}
             aria-label="Next"
-            className="
-              hidden md:flex
-              absolute right-0 top-1/2 -translate-y-1/2 z-10
-              w-10 h-10 rounded-full bg-white shadow-md border border-gray-200
-              items-center justify-center
-              transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg
-              disabled:opacity-30 disabled:cursor-not-allowed
-            "
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
-
         </div>
-
-
       </div>
     </div>
   )

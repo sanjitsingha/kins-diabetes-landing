@@ -3,78 +3,21 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
-import { useLanguage } from '../../context/LanguageContext'
-import { translations } from '../../i18n/translations'
 
 const REVIEWS = [
-  {
-    name: 'Priya Sharma',
-    date: 'March 2024',
-    rating: 5,
-    review: 'Dr. Sekhar Chakraborty is an exceptional doctor. My blood sugar levels have been under control for the past 6 months thanks to his guidance. Highly recommend Kins Diabetes Clinic!',
-    initials: 'PS',
-    color: '#4285F4',
-  },
-  {
-    name: 'Rajesh Kumar',
-    date: 'February 2024',
-    rating: 5,
-    review: 'Outstanding care and very detailed consultation. The doctors here take time to explain everything and the treatment plan has worked wonderfully for my Type 2 diabetes.',
-    initials: 'RK',
-    color: '#34A853',
-  },
-  {
-    name: 'Meena Devi',
-    date: 'January 2024',
-    rating: 5,
-    review: 'I have been a patient for over a year now. The team is always available and the clinic is well-equipped. My HbA1c dropped significantly after following their diet and medication plan.',
-    initials: 'MD',
-    color: '#EA4335',
-  },
-  {
-    name: 'Amit Ghosh',
-    date: 'December 2023',
-    rating: 5,
-    review: 'Best diabetes clinic in Siliguri. Dr. Hironmay Paul explained my condition in a way I could actually understand. Very patient and professional staff throughout.',
-    initials: 'AG',
-    color: '#FBBC05',
-  },
-  {
-    name: 'Sunita Rai',
-    date: 'November 2023',
-    rating: 4,
-    review: 'Very good experience overall. The doctors are knowledgeable and the wait time is reasonable. My diabetes management has improved a lot since I started coming here.',
-    initials: 'SR',
-    color: '#4285F4',
-  },
-  {
-    name: 'Debashis Paul',
-    date: 'October 2023',
-    rating: 5,
-    review: 'Excellent clinic with caring doctors. They monitor progress regularly and adjust treatment accordingly. I feel confident that my health is in good hands at Kins.',
-    initials: 'DP',
-    color: '#34A853',
-  },
-  {
-    name: 'Lakshmi Agarwal',
-    date: 'September 2023',
-    rating: 5,
-    review: 'I was struggling with my sugar levels for years before coming here. Within 3 months, my numbers were finally stable. Truly life-changing experience.',
-    initials: 'LA',
-    color: '#EA4335',
-  },
+  { name: 'Priya Sharma',    date: 'March 2024',     rating: 5, review: 'Dr. Sekhar Chakraborty is an exceptional doctor. My blood sugar levels have been under control for the past 6 months thanks to his guidance. Highly recommend Kins Diabetes Clinic!', initials: 'PS', color: '#4285F4' },
+  { name: 'Rajesh Kumar',    date: 'February 2024',  rating: 5, review: 'Outstanding care and very detailed consultation. The doctors here take time to explain everything and the treatment plan has worked wonderfully for my Type 2 diabetes.', initials: 'RK', color: '#34A853' },
+  { name: 'Meena Devi',      date: 'January 2024',   rating: 5, review: 'I have been a patient for over a year now. The team is always available and the clinic is well-equipped. My HbA1c dropped significantly after following their diet and medication plan.', initials: 'MD', color: '#EA4335' },
+  { name: 'Amit Ghosh',      date: 'December 2023',  rating: 5, review: 'Best diabetes clinic in Siliguri. Dr. Hironmay Paul explained my condition in a way I could actually understand. Very patient and professional staff throughout.', initials: 'AG', color: '#FBBC05' },
+  { name: 'Sunita Rai',      date: 'November 2023',  rating: 4, review: 'Very good experience overall. The doctors are knowledgeable and the wait time is reasonable. My diabetes management has improved a lot since I started coming here.', initials: 'SR', color: '#4285F4' },
+  { name: 'Debashis Paul',   date: 'October 2023',   rating: 5, review: 'Excellent clinic with caring doctors. They monitor progress regularly and adjust treatment accordingly. I feel confident that my health is in good hands at Kins.', initials: 'DP', color: '#34A853' },
+  { name: 'Lakshmi Agarwal', date: 'September 2023', rating: 5, review: 'I was struggling with my sugar levels for years before coming here. Within 3 months, my numbers were finally stable. Truly life-changing experience.', initials: 'LA', color: '#EA4335' },
 ]
 
 const StarRating = ({ rating }) => (
   <div className="flex items-center gap-0.5">
-    {[1, 2, 3, 4, 5].map((star) => (
-      <svg
-        key={star}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill={star <= rating ? '#FBBC05' : '#e2e8f0'}
-      >
+    {[1,2,3,4,5].map((star) => (
+      <svg key={star} width="20" height="20" viewBox="0 0 24 24" fill={star <= rating ? '#FBBC05' : '#e2e8f0'}>
         <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
       </svg>
     ))}
@@ -91,23 +34,16 @@ const GoogleLogo = () => (
 )
 
 const GoogleReviews = () => {
-  const { lang } = useLanguage()
-  const tx = translations[lang].reviews
   return (
     <div className="w-full bg-gray-100">
-      <div className="max-w-[1200px] mx-auto px-7 py-20">
-
-        {/* Section header */}
+      <div className="max-w-[1200px] mx-auto px-7 py-30">
         <div className="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
-              {tx.eyebrow}
+              Google Reviews
             </span>
-            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">
-              {tx.h2}
-            </h2>
+            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">What Our Patients Say</h2>
           </div>
-          {/* Aggregate rating badge */}
           <div className="flex items-center gap-3 rounded-xl px-5 py-3 self-start md:self-auto">
             <GoogleLogo />
             <div>
@@ -115,7 +51,7 @@ const GoogleReviews = () => {
                 <span className="font-bold text-[#0d1b2a] text-lg leading-none">4.9</span>
                 <StarRating rating={5} />
               </div>
-              <div className="text-[#5a7184] text-xs mt-0.5">{tx.ratingText}</div>
+              <div className="text-[#5a7184] text-xs mt-0.5">Based on 1,500+ reviews</div>
             </div>
           </div>
         </div>
@@ -127,21 +63,14 @@ const GoogleReviews = () => {
           grabCursor
           loop
           autoplay={{ delay: 2800, disableOnInteraction: false, pauseOnMouseEnter: true }}
-          breakpoints={{
-            768: { slidesPerView: 3.1, spaceBetween: 20 },
-          }}
+          breakpoints={{ 768: { slidesPerView: 3.1, spaceBetween: 20 } }}
         >
           {REVIEWS.map((r, i) => (
             <SwiperSlide key={i}>
-              <div className="bg-white border border-[#e2ecf3] rounded-2xl p-5 flex flex-col gap-3 min-h-[220px]">
-
-                {/* Top row: avatar + name + Google logo */}
-                <div className="flex items-center  justify-between">
+              <div className="bg-white border border-[#e2ecf3] rounded p-5 py-10 mt-10 flex flex-col gap-3 min-h-[220px]">
+                <div className="flex items-center mb-4 justify-between">
                   <div className="flex items-center gap-3">
-                    <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                      style={{ backgroundColor: r.color }}
-                    >
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
                       {r.initials}
                     </div>
                     <div>
@@ -151,20 +80,12 @@ const GoogleReviews = () => {
                   </div>
                   <GoogleLogo />
                 </div>
-
-                {/* Stars */}
                 <StarRating rating={r.rating} />
-
-                {/* Review text */}
-                <p className="text-[#5a7184] text-sm leading-relaxed flex-1 mt-3">
-                  "{r.review}"
-                </p>
-
+                <p className="text-[#5a7184] text-sm leading-relaxed flex-1 mt-3">"{r.review}"</p>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-
       </div>
     </div>
   )

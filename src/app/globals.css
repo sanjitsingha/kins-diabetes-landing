@@ -22,6 +22,32 @@
 body {
   font-family: var(--font-outfit), sans-serif;
   font-weight: 400;
+  top: 0px !important;
+}
+
+/* Hide Google Translate top banner */
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+iframe.skiptranslate {
+  display: none !important;
+}
+
+/* Hide Google Translate branding inside the dropdown widget */
+.goog-te-gadget {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+.goog-te-gadget img,
+.goog-te-gadget > span {
+  display: none !important;
+}
+.goog-te-combo {
+  font-size: 13px !important;
+  color: #0d1b2a !important;
 }
 
 /* Outfit as display/heading font — medium-bold weight + tight tracking */
