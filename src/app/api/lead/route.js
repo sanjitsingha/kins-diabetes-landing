@@ -4,6 +4,7 @@ import { getZohoAccessToken } from "@/lib/zoho";
 export async function POST(req) {
   try {
     const body = await req.json();
+    console.log("Lead Data:", body);
 
     const accessToken =
       await getZohoAccessToken();
@@ -40,6 +41,9 @@ export async function POST(req) {
 
     const result =
       await response.json();
+
+console.log("Zoho Status:", response.status);
+console.log("Zoho Response:", result);
 
     return NextResponse.json(result);
 
