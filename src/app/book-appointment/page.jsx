@@ -125,6 +125,11 @@ export default function BookAppointmentPage() {
     return;
   }
 
+  if (!supabase) {
+    setServerError("Service unavailable. Please try again later.");
+    return;
+  }
+
   setLoading(true);
   const { error } = await supabase
     .from("appointments")
