@@ -141,6 +141,8 @@ export default function PatientStories() {
         h.card.removeEventListener('click', h.onClick);
       });
     };
+
+    
   }, []);
 
   return (
@@ -153,7 +155,7 @@ export default function PatientStories() {
         .ring-spin-rev { animation: ring-rotate 30s linear infinite reverse; }
         .ps-card { cursor: pointer; }
         @media (max-width: 768px) {
-          .ps-pin { align-items: flex-start !important; padding-top: 18px !important; }
+          .ps-pin { align-items: flex-start !important; padding-top: 124px !important; }
           .ps-constellation { height: 400px !important; }
           .ps-card { width: 140px !important; height: 175px !important; border-width: 3px !important; border-radius: 16px !important; }
           .ps-card-meta { padding: 32px 10px 10px !important; }
@@ -171,7 +173,7 @@ export default function PatientStories() {
       `}</style>
 
       <section ref={sectionRef} style={S.section}>
-        <div className='ps-pin h-screen py-20' style={S.pin}>
+        <div className='ps-pin h-screen pb-20' style={S.pin}>
           <div style={S.container}>
 
             <div style={S.sectionHead}>
@@ -235,12 +237,12 @@ export default function PatientStories() {
               </div>
             </div>
 
-            <div ref={ratingRef} style={{ textAlign: 'center', opacity: 0 }}>
+            {/* <div ref={ratingRef} style={{ textAlign: 'center', opacity: 0 }}>
               <a href="https://share.google/dmePZokGio3TfWQHF" target="_blank" rel="noopener noreferrer" style={S.pill}>
                 <span style={S.gIcon}>G</span>
                 <span style={S.pillText}>4.8 / 5 on Google · 1,000+ Reviews</span>
               </a>
-            </div>
+            </div> */}
 
           </div>
         </div>
