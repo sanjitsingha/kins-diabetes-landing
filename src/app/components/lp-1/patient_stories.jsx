@@ -125,6 +125,20 @@ export default function PatientStories() {
         @keyframes hint-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
         .ring-spin { transform-origin: 400px 400px; animation: ring-rotate 22s linear infinite; }
         .ring-spin-rev { animation: ring-rotate 30s linear infinite reverse; }
+        @media (max-width: 768px) {
+          .ps-constellation { height: 400px !important; }
+          .ps-card { width: 140px !important; height: 175px !important; border-width: 3px !important; border-radius: 16px !important; }
+          .ps-card-meta { padding: 32px 10px 10px !important; }
+          .ps-card-name { font-size: 11px !important; margin-bottom: 3px !important; }
+          .ps-hba1c { gap: 4px !important; }
+          .ps-lab { font-size: 7px !important; padding: 2px 5px !important; }
+          .ps-from-val, .ps-to-val { font-size: 1.3rem !important; }
+          .ps-arr { font-size: 0.8rem !important; }
+          .ps-core { width: 210px !important; }
+          .ps-orb { width: 58px !important; height: 58px !important; margin-bottom: 14px !important; }
+          .ps-core-title { font-size: 1.35rem !important; margin-bottom: 8px !important; }
+          .ps-core-sub { font-size: 0.78rem !important; }
+        }
       `}</style>
 
       <section ref={sectionRef} style={S.section}>
@@ -138,7 +152,7 @@ export default function PatientStories() {
               </div>
             </div>
 
-            <div style={S.constellation}>
+            <div className="ps-constellation" style={S.constellation}>
               <svg style={S.rings} viewBox="0 0 800 800" aria-hidden="true">
                 <defs>
                   <linearGradient id="ring-stroke-jsx" x1="0" y1="0" x2="1" y2="1">
@@ -154,28 +168,29 @@ export default function PatientStories() {
                 <circle cx="400" cy="400" r="255" fill="none" stroke="url(#ring-stroke-jsx)" strokeWidth="1.5" strokeDasharray="70 300" className="ring-spin ring-spin-rev" />
               </svg>
 
-              <div ref={coreRef} style={S.core}>
-                <div style={S.orb}>
+              <div ref={coreRef} className="ps-core" style={S.core}>
+                <div className="ps-orb" style={S.orb}>
                   <div style={{ position: 'absolute', top: '12%', left: '18%', width: '30%', height: '22%', background: 'radial-gradient(ellipse,rgba(255,255,255,.85),transparent 70%)', borderRadius: '50%', filter: 'blur(2px)' }} />
                 </div>
-                <h3 style={S.coreTitle}>Real Patients, Real Stories.</h3>
-                <p style={S.coreSub}>Guided by specialist doctors, supported by counsellors, and powered by personalised, evidence-based care.</p>
+                <h3 className="ps-core-title" style={S.coreTitle}>Real Patients, Real Stories.</h3>
+                <p className="ps-core-sub" style={S.coreSub}>Guided by specialist doctors, supported by counsellors, and powered by personalised, evidence-based care.</p>
               </div>
 
               {CARDS.map((c, i) => (
                 <article
                   key={c.name}
                   ref={el => cardRefs.current[i] = el}
+                  className="ps-card"
                   style={{ ...S.card, left: '50%', top: '50%', opacity: 0, transform: 'translate(-50%,-50%) scale(0.5)' }}
                 >
                   <img src={c.img} alt={c.name} loading="lazy" style={S.cardImg} onError={e => { e.target.src = `https://picsum.photos/seed/${c.name}/500/500`; }} />
-                  <div style={S.cardMeta}>
-                    <div style={S.cardName}>{c.name} <span style={S.nameAge}>({c.age}yrs)</span></div>
-                    <div style={S.hba1c}>
-                      <span style={S.lab}>HBA1C</span>
-                      <span style={S.fromVal}>{c.from}</span>
-                      <span style={S.arr}>→</span>
-                      <span style={S.toVal}>{c.to}</span>
+                  <div className="ps-card-meta" style={S.cardMeta}>
+                    <div className="ps-card-name" style={S.cardName}>{c.name} <span style={S.nameAge}>({c.age}yrs)</span></div>
+                    <div className="ps-hba1c" style={S.hba1c}>
+                      <span className="ps-lab" style={S.lab}>HBA1C</span>
+                      <span className="ps-from-val" style={S.fromVal}>{c.from}</span>
+                      <span className="ps-arr" style={S.arr}>→</span>
+                      <span className="ps-to-val" style={S.toVal}>{c.to}</span>
                     </div>
                   </div>
                 </article>

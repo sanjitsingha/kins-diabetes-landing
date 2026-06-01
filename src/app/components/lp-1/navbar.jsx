@@ -110,7 +110,7 @@ const Navbar = () => {
       {/* Hidden Google Translate mount point — must stay in DOM */}
       <div id="google_translate_element" className="hidden" />
 
-      <div className="max-w-[1200px] mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
+      <div className="max-w-[1200px] px-6 mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
         <a href="/" className="md:h-[42px] h-[30px] shrink-0">
           <img src="/landing-page/kd-logo.png" alt="Kins Diabetes" className="h-full w-auto" />
         </a>
@@ -118,7 +118,7 @@ const Navbar = () => {
           <LanguageSwitcher />
           <a
             href="/book-appointment"
-            className="bg-[#12a4dd] hover:bg-[#0b7aaa] text-white font-semibold text-sm px-3 md:px-5 md:py-3 py-2 rounded-full transition-colors shadow-[0_6px_18px_-6px_rgba(18,164,221,0.55)] whitespace-nowrap"
+            className="bg-[#12a4dd] md:block hidden hover:bg-[#0b7aaa] text-white font-semibold text-sm px-3 md:px-5 md:py-3 py-2 rounded-full transition-colors shadow-[0_6px_18px_-6px_rgba(18,164,221,0.55)] whitespace-nowrap"
           >
             Book Free Counselling
           </a>

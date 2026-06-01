@@ -1,6 +1,8 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
+import { Suspense } from 'react';
+import FacebookPixel from "./FacebookPixel";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -18,7 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Set googtrans cookie from ?lang= param before Google Translate loads */}
+        {/* Google Translate cookie set before page renders */}
         <script dangerouslySetInnerHTML={{__html: `
           (function() {
             var lang = new URLSearchParams(location.search).get('lang');
@@ -30,7 +32,7 @@ export default function RootLayout({ children }) {
           })();
         `}} />
 
-        {/* Meta Pixel — must be in <head> for earliest possible fire */}
+        {/* META Pixel Base Code */}
         <script dangerouslySetInnerHTML={{__html: `
           !function(f,b,e,v,n,t,s){
             if(f.fbq)return;n=f.fbq=function(){
@@ -51,7 +53,14 @@ export default function RootLayout({ children }) {
         `}} />
       </head>
       <body className={`${outfit.variable} antialiased`}>
+
+        {/* FacebookPixel handles PageView on every route change */}
+        <Suspense fallback={null}>
+          <FacebookPixel />
+        </Suspense>
+
         {children}
+
         <Script id="google-translate-init" strategy="afterInteractive">{`
           function googleTranslateElementInit() {
             new google.translate.TranslateElement(

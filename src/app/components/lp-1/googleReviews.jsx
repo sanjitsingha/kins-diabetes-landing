@@ -56,10 +56,11 @@ const GoogleReviews = () => {
           </div>
         </div>
 
+        <div className="-mr-7 md:mr-0">
         <Swiper
           modules={[Autoplay]}
           spaceBetween={16}
-          slidesPerView={2.1}
+          slidesPerView={1.2}
           grabCursor
           loop
           autoplay={{ delay: 2800, disableOnInteraction: false, pauseOnMouseEnter: true }}
@@ -67,7 +68,7 @@ const GoogleReviews = () => {
         >
           {REVIEWS.map((r, i) => (
             <SwiperSlide key={i}>
-              <div className="bg-white border border-[#e2ecf3] rounded p-5 py-10 mt-10 flex flex-col gap-3 min-h-[220px]">
+              <div className="bg-white border border-[#e2ecf3] rounded p-5 py-10 mt-10 flex flex-col gap-3 min-h-[350px]">
                 <div className="flex items-center mb-4 justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
@@ -86,6 +87,7 @@ const GoogleReviews = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        </div>
       </div>
     </div>
   )

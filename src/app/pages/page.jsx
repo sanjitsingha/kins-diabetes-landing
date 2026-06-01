@@ -40,14 +40,14 @@ function FaqItem({ question, answer }) {
     const bodyRef = useRef(null);
     return (
         <div className="rounded-xl border border-[#c8dde8] bg-white overflow-hidden">
-            <button className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 font-semibold text-[#1e2d3d] text-base hover:bg-[#f4f8fb] transition-colors" onClick={() => setOpen(!open)}>
+            <button className="w-full text-left px-4 py-4 sm:px-6 sm:py-5 flex items-center justify-between gap-3 sm:gap-4 font-semibold text-[#1e2d3d] text-sm sm:text-base hover:bg-[#f4f8fb] transition-colors" onClick={() => setOpen(!open)}>
                 {question}
                 <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${open ? 'bg-[#12a4dd] text-white rotate-45' : 'bg-[#f0f9fe] text-[#12a4dd]'}`}>
                     <Icon name="plus" size={14} />
                 </span>
             </button>
             <div ref={bodyRef} className="overflow-hidden transition-all duration-300 ease-in-out" style={{ maxHeight: open ? (bodyRef.current?.scrollHeight || 500) + 'px' : '0px' }}>
-                <p className="text-[#5a7184] text-sm leading-relaxed px-6 pb-5">{answer}</p>
+                <p className="text-[#5a7184] text-sm leading-relaxed px-4 sm:px-6 pb-5">{answer}</p>
             </div>
         </div>
     );
@@ -56,38 +56,48 @@ function FaqItem({ question, answer }) {
 // ─── Doctor Flip Card ─────────────────────────────────────────────────────────
 function DoctorCard({ name, role, years, tone, imageSrc, quals, specialisation, languages, available }) {
     const [flipped, setFlipped] = useState(false);
+    const [hovered, setHovered] = useState(false);
     const gradients = {
         a: 'from-[#b6e2f5] via-[#5fb4dc] to-[#0b7aaa]',
         b: 'from-[#c4d4ec] via-[#7d97c3] to-[#41527e]',
         d: 'from-[#b1e0c6] via-[#5fb188] to-[#1f7a4f]',
         e: 'from-[#d4c0ee] via-[#9978ce] to-[#6b4ca8]',
     };
+    const showBack = flipped || hovered;
     return (
-        <div className="relative flex-shrink-0 w-64 h-[480px] cursor-pointer" style={{ perspective: '1400px' }} onClick={() => setFlipped(!flipped)} tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setFlipped(!flipped)}>
-            <div className="relative w-full h-full transition-transform duration-700" style={{ transformStyle: 'preserve-3d', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+        <div
+            className="doctor-flip-card relative shrink-0 w-full h-[360px] md:h-[480px] cursor-pointer"
+            style={{ perspective: '1400px' }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onClick={() => setFlipped(f => !f)}
+            tabIndex={0}
+            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setFlipped(f => !f)}
+        >
+            <div className="doctor-flip-inner relative w-full h-full transition-transform duration-700" style={{ transformStyle: 'preserve-3d', transform: showBack ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
                 <div className="absolute inset-0 rounded-2xl overflow-hidden border border-[#c8dde8] shadow-sm" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
                     <div className={`absolute inset-0 bg-gradient-to-b ${gradients[tone]} flex items-center justify-center overflow-hidden`}>
                         <img src={imageSrc} alt={name} className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-300" />
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/85 via-black/60 to-transparent px-5 pb-5 pt-16 text-white">
-                        <span className="inline-block bg-white/20 backdrop-blur-sm border border-white/25 text-white text-[11px] font-semibold tracking-wide px-3 py-1 rounded-full mb-3">{years}</span>
-                        <h3 className="font-serif text-xl text-white mb-1 leading-tight">{name}</h3>
-                        <div className="text-white/90 text-sm">{role}</div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/85 via-black/60 to-transparent px-4 pb-4 pt-12 md:px-5 md:pb-5 md:pt-16 text-white">
+                        <span className="inline-block bg-white/20 backdrop-blur-sm border border-white/25 text-white text-[10px] md:text-[11px] font-semibold tracking-wide px-2.5 py-0.5 md:px-3 md:py-1 rounded-full mb-2 md:mb-3">{years}</span>
+                        <h3 className="font-serif text-base md:text-xl text-white mb-0.5 md:mb-1 leading-tight">{name}</h3>
+                        <div className="text-white/90 text-xs md:text-sm">{role}</div>
                     </div>
-                    <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-[#0b7aaa] flex items-center justify-center shadow-md">
-                        <Icon name="arrowRight" size={14} />
+                    <div className="absolute top-3 right-3 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/90 text-[#0b7aaa] flex items-center justify-center shadow-md">
+                        <Icon name="arrowRight" size={13} />
                     </div>
                 </div>
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white to-[#f0f9fe] border border-[#c8dde8] p-6 flex flex-col" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                    <div className="text-center pb-4 border-b border-[#c8dde8] mb-4">
-                        <div className="font-serif text-[#0d1b2a] text-lg leading-tight">{name}</div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white to-[#f0f9fe] border border-[#c8dde8] p-4 md:p-6 flex flex-col" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                    <div className="text-center pb-3 md:pb-4 border-b border-[#c8dde8] mb-3 md:mb-4">
+                        <div className="font-serif text-[#0d1b2a] text-base md:text-lg leading-tight">{name}</div>
                         <div className="text-[#5a7184] text-xs mt-1">{role}</div>
                     </div>
-                    <ul className="space-y-3 flex-1 flex flex-col justify-center">
+                    <ul className="space-y-2 md:space-y-3 flex-1 flex flex-col justify-center">
                         {[{ label: 'Qualifications', val: quals }, { label: 'Specialisation', val: specialisation }, { label: 'Languages', val: languages }, { label: 'Available', val: available }].map(({ label, val }) => (
                             <li key={label}>
-                                <div className="text-[10px] font-bold tracking-widest uppercase text-[#12a4dd]">{label}</div>
-                                <div className="text-sm text-[#1e2d3d] leading-snug mt-0.5">{val}</div>
+                                <div className="text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-[#12a4dd]">{label}</div>
+                                <div className="text-xs md:text-sm text-[#1e2d3d] leading-snug mt-0.5">{val}</div>
                             </li>
                         ))}
                     </ul>
@@ -145,10 +155,10 @@ export default function DiabetesCounsellingPage() {
             </Head>
 
             <style>{`
-                .h-scroll { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 28px 28px; margin: 0 -28px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+                .h-scroll { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; padding: 8px 16px 28px; margin: 0 -16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
                 .h-scroll::-webkit-scrollbar { display: none; }
                 .h-scroll > * { flex: 0 0 calc(33% - 12px); scroll-snap-align: start; min-width: 220px; }
-                @media (max-width: 768px) { .h-scroll > * { flex: 0 0 calc(66% - 12px); } }
+                @media (max-width: 768px) { .h-scroll > * { flex: 0 0 calc(80% - 9px); min-width: unset; } }
                 @keyframes orb-spin { to { transform: rotate(360deg); } }
             `}</style>
 
@@ -163,36 +173,79 @@ export default function DiabetesCounsellingPage() {
                 <ServicesSection />
 
                 {/* ─── COMPARISON TABLE ─────────────────────────── */}
-                <section className="py-24">
+                <section className="py-14 md:py-24">
                     <div className="max-w-[1200px] mx-auto px-4">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
+                        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 Why choose us
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Kins Diabetes vs. a regular clinic — the difference is clear.</h2>
-                            <p className="text-[#5a7184]">Most clinics give you a prescription and send you home. We build you a complete system.</p>
+                            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight mb-4">Kins Diabetes vs. a regular clinic — the difference is clear.</h2>
+                            <p className="text-[#5a7184] text-sm sm:text-base">Most clinics give you a prescription and send you home. We build you a complete system.</p>
                         </div>
                         <div className="max-w-4xl mx-auto bg-white rounded-2xl overflow-hidden border border-[#c8dde8] shadow-md">
-                            <div className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8]">
-                                <div className="px-6 py-5 font-bold text-sm" />
-                                <div className="px-6 py-5 text-center bg-[#12a4dd] text-white font-bold text-sm">
-                                    Kins Diabetes
-                                    <span className="block text-[11px] font-medium opacity-85 mt-1 tracking-wide uppercase">NABH · NABL · 14+ Years</span>
-                                </div>
-                                <div className="px-6 py-5 text-center bg-[#eef2f5] text-[#5a7184] font-bold text-sm">Regular Clinic</div>
-                            </div>
-                            {COMPARE_ROWS.map(({ feature, kins, other }) => (
-                                <div key={feature} className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8] last:border-0">
-                                    <div className="px-6 py-4 font-semibold text-[#1e2d3d] text-sm">{feature}</div>
-                                    <div className="px-6 py-4 bg-[#d6f0fb] text-[#0b7aaa] text-sm">
-                                        <span className="inline-flex items-center gap-2 font-medium">
-                                            <Icon name="check" size={18} className="text-[#16a34a] flex-shrink-0" strokeWidth={3} /> {kins}
-                                        </span>
+                            {/* Header row */}
+                            <div className="grid grid-cols-[1fr_72px_72px] md:grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8]">
+                                <div className="px-4 py-4 md:px-6 md:py-5 font-bold text-sm" />
+
+                                {/* Kins header */}
+                                <div className="flex items-center justify-center bg-[#12a4dd] text-white font-bold text-sm">
+                                    {/* mobile */}
+                                    <div className="flex flex-col items-center justify-center py-3 md:hidden">
+                                        <span className="text-[10px] font-bold tracking-wide">Kins</span>
                                     </div>
-                                    <div className="px-6 py-4 bg-[#f4f8fb] text-[#5a7184] text-sm">
-                                        <span className="inline-flex items-center gap-2 font-medium">
-                                            <Icon name="x" size={18} className="text-[#cbd5e1] flex-shrink-0" /> {other}
-                                        </span>
+                                    {/* desktop */}
+                                    <div className="hidden md:block text-center px-6 py-5">
+                                        Kins Diabetes
+                                        <span className="block text-[11px] font-medium opacity-85 mt-1 tracking-wide uppercase">NABH · NABL · 14+ Years</span>
+                                    </div>
+                                </div>
+
+                                {/* Regular Clinic header */}
+                                <div className="flex items-center justify-center bg-[#eef2f5] text-[#5a7184] font-bold text-sm">
+                                    {/* mobile */}
+                                    <div className="flex flex-col items-center justify-center py-3 md:hidden">
+                                        <span className="text-[10px] font-bold tracking-wide">Others</span>
+                                    </div>
+                                    {/* desktop */}
+                                    <div className="hidden md:block px-6 py-5">Regular Clinic</div>
+                                </div>
+                            </div>
+
+                            {/* Data rows */}
+                            {COMPARE_ROWS.map(({ feature, kins, other }) => (
+                                <div key={feature} className="grid grid-cols-[1fr_72px_72px] md:grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8] last:border-0">
+                                    <div className="px-4 py-3 md:px-6 md:py-4 font-semibold text-[#1e2d3d] text-sm flex items-center">{feature}</div>
+
+                                    {/* Kins cell */}
+                                    <div className="flex items-center justify-center bg-[#d6f0fb]">
+                                        {/* mobile: green circle tick */}
+                                        <div className="flex items-center justify-center md:hidden py-3">
+                                            <span className="w-6 h-6 rounded-full bg-[#16a34a] flex items-center justify-center">
+                                                <Icon name="check" size={12} className="text-white" strokeWidth={3} />
+                                            </span>
+                                        </div>
+                                        {/* desktop: icon + text */}
+                                        <div className="hidden md:flex px-6 py-4 text-[#0b7aaa] text-sm">
+                                            <span className="inline-flex items-center gap-2 font-medium">
+                                                <Icon name="check" size={16} className="text-[#16a34a] flex-shrink-0" strokeWidth={3} /> {kins}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Regular Clinic cell */}
+                                    <div className="flex items-center justify-center bg-[#f4f8fb]">
+                                        {/* mobile: red circle X */}
+                                        <div className="flex items-center justify-center md:hidden py-3">
+                                            <span className="w-6 h-6 rounded-full bg-[#ef4444] flex items-center justify-center">
+                                                <Icon name="x" size={12} className="text-white" />
+                                            </span>
+                                        </div>
+                                        {/* desktop: icon + text */}
+                                        <div className="hidden md:flex px-6 py-4 text-[#5a7184] text-sm">
+                                            <span className="inline-flex items-center gap-2 font-medium">
+                                                <Icon name="x" size={16} className="text-[#cbd5e1] flex-shrink-0" /> {other}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -201,14 +254,14 @@ export default function DiabetesCounsellingPage() {
                 </section>
 
                 {/* ─── DOCTORS ──────────────────────────────────── */}
-                <section className="py-24 bg-[#f0f9fe]">
+                <section className="py-14 md:py-24 bg-[#f0f9fe]">
                     <div className="max-w-[1200px] mx-auto px-4">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
+                        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 Your care team
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight mb-4">Expert doctors. Real experience. Right here in Siliguri.</h2>
-                            <p className="text-[#5a7184]">Our specialists have dedicated their careers to diabetes — so you get the most informed, experienced guidance possible.</p>
+                            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight mb-4">Expert doctors. Real experience. Right here in Siliguri.</h2>
+                            <p className="text-[#5a7184] text-sm sm:text-base">Our specialists have dedicated their careers to diabetes — so you get the most informed, experienced guidance possible.</p>
                         </div>
                         <div className="h-scroll">
                             {DOCTORS.map((doc) => <DoctorCard key={doc.name} {...doc} />)}
@@ -220,13 +273,13 @@ export default function DiabetesCounsellingPage() {
                 <GoogleReviews />
 
                 {/* ─── FAQ ──────────────────────────────────────── */}
-                <section className="py-24">
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="text-center max-w-3xl mx-auto mb-14">
+                <section className="py-14 md:py-24">
+                    <div className="max-w-[1200px] mx-auto px-4 sm:px-7">
+                        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 Common questions
                             </span>
-                            <h2 className="font-serif text-4xl text-[#0d1b2a] leading-tight">Everything you want to know — before you decide.</h2>
+                            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight">Everything you want to know — before you decide.</h2>
                         </div>
                         <div className="max-w-[820px] mx-auto space-y-3.5">
                             {FAQS.map(({ q, a }) => <FaqItem key={q} question={q} answer={a} />)}
@@ -235,14 +288,14 @@ export default function DiabetesCounsellingPage() {
                 </section>
 
                 {/* ─── CONTACT ──────────────────────────────────── */}
-                <section className="py-24 bg-[#0b7aaa] text-white" id="contact">
+                <section className="py-14 md:py-24 bg-[#0b7aaa] text-white" id="contact">
                     <div id="book" className="relative -top-20" />
-                    <div className="max-w-[1200px] mx-auto px-7">
-                        <div className="grid md:grid-cols-2 gap-14 items-start">
+                    <div className="max-w-[1200px] mx-auto px-4 sm:px-7">
+                        <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
                             <div>
-                                <h3 className="font-serif text-4xl text-white mb-3 leading-tight">Visit us in Siliguri.</h3>
-                                <p className="text-white/80 mb-8">Walk in for a free consultation, or call us — we&apos;ll be glad to help.</p>
-                                <ul className="space-y-6 mb-7">
+                                <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white mb-3 leading-tight">Visit us in Siliguri.</h3>
+                                <p className="text-white/80 mb-6 md:mb-8 text-sm sm:text-base">Walk in for a free consultation, or call us — we&apos;ll be glad to help.</p>
+                                <ul className="space-y-5 md:space-y-6 mb-7">
                                     {CONTACT_ITEMS.map(({ icon, label, value, href }) => (
                                         <li key={label} className="grid gap-3.5 items-start" style={{ gridTemplateColumns: '44px 1fr' }}>
                                             <span className="w-11 h-11 rounded-xl bg-white/12 text-white flex items-center justify-center flex-shrink-0">
@@ -259,11 +312,11 @@ export default function DiabetesCounsellingPage() {
                                         </li>
                                     ))}
                                 </ul>
-                                <div className="mt-6 text-sm text-white/85 border-t border-white/15 pt-5 leading-relaxed">
+                                <div className="mt-6 text-xs sm:text-sm text-white/85 border-t border-white/15 pt-5 leading-relaxed">
                                     NABH Accredited · NABL Certified · 14+ Years · North Bengal&apos;s Only Specialised Diabetes Centre
                                 </div>
                             </div>
-                            <div className="rounded-xl overflow-hidden h-56 bg-black/20 border border-white/20">
+                            <div className="rounded-xl overflow-hidden h-64 md:h-80 bg-black/20 border border-white/20">
                                 <iframe
                                     src="https://www.google.com/maps?q=Kins+Diabetes+Siliguri&output=embed"
                                     loading="lazy"
