@@ -19,7 +19,7 @@ export async function POST(req) {
           {
             Last_Name: body.name,
             Mobile: body.mobile,
-            City: body.city,
+            City: body.city,    
             Are_You_Diabetic: body.diabetic,
             How_Can_I_Help_You: body.service,
 
@@ -29,7 +29,7 @@ export async function POST(req) {
 
             Landing_Page: body.landing_page,
 
-            Lead_Source: "Website",
+            Lead_Source: "Facebook",
           },
         ],
       }),
