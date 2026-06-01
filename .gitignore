@@ -12,7 +12,9 @@
 
 
 # Video Files
-/patientsVideo
+/public/patientsVideo/PTV1.mp4
+/public/patientsVideo/PTV2.mp4
+/public/patientsVideo/PTV3.mp4
 
 # testing
 /coverage
