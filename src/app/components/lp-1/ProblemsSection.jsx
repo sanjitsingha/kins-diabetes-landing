@@ -62,25 +62,32 @@ function ProblemCard({ problem }) {
       >
         <Icon size={20} color={problem.iconColor} />
       </div>
-      <h3 className="font-semibold text-[#092540] text-sm mb-1.5 leading-snug">
+      <h3 className="font-semibold text-[#092540] text-xl mb-1.5 leading-snug">
         {problem.title}
       </h3>
-      <p className="text-xs text-[#5a7184] leading-relaxed">{problem.desc}</p>
+      <p className="text-lg text-[#5a7184] leading-relaxed">{problem.desc}</p>
     </div>
   )
 }
 
 export default function ProblemsSection() {
-  const sectionRef = useRef(null)
-  const [progress, setProgress] = useState(0)
+  const sectionRef       = useRef(null)
+  const mobileSectionRef = useRef(null)
+  const [progress, setProgress]             = useState(0)
+  const [mobileProgress, setMobileProgress] = useState(0)
 
   useEffect(() => {
     const onScroll = () => {
-      if (!sectionRef.current) return
-      const { top, height } = sectionRef.current.getBoundingClientRect()
-      const scrollable = height - window.innerHeight
-      if (scrollable <= 0) return
-      setProgress(clamp(-top / scrollable, 0, 1))
+      if (sectionRef.current) {
+        const { top, height } = sectionRef.current.getBoundingClientRect()
+        const scrollable = height - window.innerHeight
+        if (scrollable > 0) setProgress(clamp(-top / scrollable, 0, 1))
+      }
+      if (mobileSectionRef.current) {
+        const { top, height } = mobileSectionRef.current.getBoundingClientRect()
+        const scrollable = height - window.innerHeight
+        if (scrollable > 0) setMobileProgress(clamp(-top / scrollable, 0, 1))
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
@@ -114,8 +121,8 @@ export default function ProblemsSection() {
             <p className="text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-3">
               Common struggles
             </p>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#092540]">
-              Do you relate to <br /> any of these?
+            <h2 className="text-2xl md:text-3xl lg:text-[48px] font-bold text-[#092540]">
+              Do you relate to <br/> any of these?
             </h2>
           </div>
 
@@ -171,31 +178,78 @@ export default function ProblemsSection() {
         </div>
       </section>
 
-      {/* ── Mobile: static grid layout ── */}
-      <section className="lg:hidden bg-white py-16 px-5">
-        <div className="text-center mb-10">
-          <p className="text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-3">
-            Common struggles
-          </p>
-          <h2 className="text-2xl font-bold text-[#092540]">
-            Do you relate to <br /> any of these?
-          </h2>
-        </div>
+      {/* ── Mobile: sticky scroll animation ── */}
+      <section ref={mobileSectionRef} className="lg:hidden bg-white relative" style={{ height: '480vh' }}>
+        <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden gap-6">
 
-        <div className="flex justify-center mb-10">
-          <Image
-            src="/landing-page/glucometer.png"
-            alt="Glucometer"
-            width={260}
-            height={260}
-            className="w-[260px] h-auto"
-          />
-        </div>
+          {/* Heading */}
+          <div className="text-center z-10 px-4">
+            <p className="text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-2">
+              Common struggles
+            </p>
+            <h2 className="text-4xl font-bold text-[#092540]">
+              Do you relate to any of these?
+            </h2>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
-          {problems.map((problem, i) => (
-            <ProblemCard key={i} problem={problem} />
-          ))}
+          {/* Glucometer + overlaid cards */}
+          <div className="relative w-72 shrink-0">
+            <Image
+              src="/landing-page/glucometer.png"
+              alt="Glucometer"
+              width={320}
+              height={320}
+              className="w-full h-auto relative z-0"
+            />
+
+            {problems.map((problem, i) => {
+              const offset       = i * 0.22
+              const fadeInStart  = 0.05 + offset
+              const fadeInEnd    = 0.13 + offset
+              const stayEnd      = 0.22 + offset
+              const fadeOutEnd   = 0.29 + offset
+
+              let opacity = 0, y = 32
+              if (mobileProgress >= fadeInStart && mobileProgress < fadeInEnd) {
+                const t = norm(mobileProgress, fadeInStart, fadeInEnd)
+                opacity = t; y = lerp(32, 0, t)
+              } else if (mobileProgress >= fadeInEnd && mobileProgress < stayEnd) {
+                opacity = 1; y = 0
+              } else if (mobileProgress >= stayEnd && mobileProgress < fadeOutEnd) {
+                const t = norm(mobileProgress, stayEnd, fadeOutEnd)
+                opacity = 1 - t; y = lerp(0, -44, t)
+              }
+
+              const Icon = problem.icon
+              return (
+                <div
+                  key={i}
+                  className="absolute left-1/2 z-20"
+                  style={{
+                    top: '18%',
+                    transform: `translateX(-50%) translateY(${y}px)`,
+                    opacity,
+                    pointerEvents: opacity > 0.05 ? 'auto' : 'none',
+                    width: 256,
+                  }}
+                >
+                  <div className="rounded-xl bg-white border border-[#c8dde8] shadow-2xl px-4 py-3.5">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                      style={{ background: problem.iconBg }}
+                    >
+                      <Icon size={16} color={problem.iconColor} />
+                    </div>
+                    <h3 className="font-semibold text-[#092540] text-sm mb-1 leading-snug">
+                      {problem.title}
+                    </h3>
+                    <p className="text-xs text-[#5a7184] leading-relaxed">{problem.desc}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
         </div>
       </section>
     </>

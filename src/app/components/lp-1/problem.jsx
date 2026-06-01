@@ -72,7 +72,7 @@ const problem = () => {
     }
 
     return (
-        <section className="py-24 bg-[#fffef7]">
+        <section className="pb-24 bg-[#fffef7]">
             <div className="max-w-[1200px] mx-auto px-7">
                 <div className="text-center max-w-3xl mx-auto mb-14">
                     <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
