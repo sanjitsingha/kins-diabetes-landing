@@ -14,13 +14,20 @@ const Hero = () => {
         if (error) setError('')
     }
 
-    const handleSubmit = () => {
-        if (!phone || phone.length !== 10) {
-            setError('Please enter a valid 10-digit mobile number')
-            return
-        }
-        router.push(`/book-appointment?phone=${phone}`)
+  const handleSubmit = () => {
+    if (!phone || phone.length !== 10) {
+        setError('Please enter a valid 10-digit mobile number');
+        return;
     }
+
+    const params = new URLSearchParams(window.location.search);
+
+    params.set("phone", phone);
+
+    router.push(
+        `/book-appointment?${params.toString()}`
+    );
+}
 
     return (
         <section id="top" className="py-10 pt-30 pb-20 bg-white">

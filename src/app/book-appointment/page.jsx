@@ -86,15 +86,32 @@ export default function BookAppointmentPage() {
 
   // Phone pre-filled from ?phone= URL param
   const [phoneFromUrl, setPhoneFromUrl] = useState("");
+  const [utm, setUtm] = useState({
+  source: "",
+  medium: "",
+  campaign: "",
+});
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const p = params.get("phone");
-    if (p && /^\d{10}$/.test(p)) {
-      setPhoneFromUrl(p);
-      setForm(prev => ({ ...prev, mobile: p }));
-    }
-  }, []);
+ useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  const p = params.get("phone");
+
+  if (p && /^\d{10}$/.test(p)) {
+    setPhoneFromUrl(p);
+    setForm(prev => ({
+      ...prev,
+      mobile: p,
+    }));
+  }
+
+  setUtm({
+    source: params.get("utm_source") || "",
+    medium: params.get("utm_medium") || "",
+    campaign: params.get("utm_campaign") || "",
+  });
+
+}, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -170,23 +187,25 @@ const handleSubmit = async (e) => {
 
     // Save to Zoho CRM
 
-    await fetch(
-      "/api/lead",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-        body: JSON.stringify({
-          name: form.name,
-          mobile: form.mobile,
-          city: form.city,
-          diabetic: form.diabetic,
-          service: form.service
-        })
-      }
-    );
+    await fetch("/api/lead", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+body: JSON.stringify({
+  name: form.name,
+  mobile: form.mobile,
+  city: form.city,
+  diabetic: form.diabetic,
+  service: form.service,
+
+  utm_source: utm.source,
+  utm_medium: utm.medium,
+  utm_campaign: utm.campaign,
+
+  landing_page: window.location.href
+})
+});
 
     // Meta Lead Event
 
