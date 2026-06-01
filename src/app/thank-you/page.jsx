@@ -24,6 +24,7 @@ export default function ThankYouPage() {
       fbq("track", "CompleteRegistration", {
         content_name: "Consultation Booked",
         currency:     "INR",
+        value: "500",
         status:       true,
       });
     }
