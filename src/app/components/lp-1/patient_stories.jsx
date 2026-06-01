@@ -173,7 +173,7 @@ export default function PatientStories() {
                   <div style={{ position: 'absolute', top: '12%', left: '18%', width: '30%', height: '22%', background: 'radial-gradient(ellipse,rgba(255,255,255,.85),transparent 70%)', borderRadius: '50%', filter: 'blur(2px)' }} />
                 </div>
                 <h3 className="ps-core-title" style={S.coreTitle}>Real Patients, Real Stories.</h3>
-                <p className="ps-core-sub" style={S.coreSub}>Guided by specialist doctors, supported by counsellors, and powered by personalised, evidence-based care.</p>
+                <p className="ps-core-sub hidden" style={S.coreSub}>Guided by specialist doctors, supported by counsellors, and powered by personalised, evidence-based care.</p>
               </div>
 
               {CARDS.map((c, i) => (

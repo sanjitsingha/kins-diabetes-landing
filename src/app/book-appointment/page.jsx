@@ -141,7 +141,7 @@ export default function BookAppointmentPage() {
       fbq("track", "Lead", {
         content_name: "Consultation Form",
         currency:     "INR",
-        value:        0,
+        value:        500,
       });
     }
     router.push("/thank-you");
