@@ -109,44 +109,118 @@ export default function BookAppointmentPage() {
     if (errors.mobile) setErrors(prev => ({ ...prev, mobile: false }));
   };
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
+
   e.preventDefault();
+
   setServerError(null);
 
   const newErrors = {};
-  if (!form.name.trim())    newErrors.name = true;
-  if (!form.city.trim())    newErrors.city = true;
-  if (!form.diabetic)       newErrors.diabetic = true;
-  if (!form.service)        newErrors.service = true;
-  if (!form.mobile || !/^\d{10}$/.test(form.mobile)) newErrors.mobile = true;
 
-  if (Object.keys(newErrors).length > 0) {
+  if (!form.name.trim())
+    newErrors.name = true;
+
+  if (!form.city.trim())
+    newErrors.city = true;
+
+  if (!form.diabetic)
+    newErrors.diabetic = true;
+
+  if (!form.service)
+    newErrors.service = true;
+
+  if (
+    !form.mobile ||
+    !/^\d{10}$/.test(form.mobile)
+  ) {
+    newErrors.mobile = true;
+  }
+
+  if (
+    Object.keys(newErrors).length > 0
+  ) {
     setErrors(newErrors);
     return;
   }
 
-  if (!supabase) {
-    setServerError("Service unavailable. Please try again later.");
-    return;
-  }
-
   setLoading(true);
-  const { error } = await supabase
-    .from("appointments")
-    .insert([{ name: form.name, mobile: form.mobile, city: form.city, diabetic: form.diabetic, service: form.service }]);
-  setLoading(false);
 
-  if (!error) {
-    if (typeof fbq === "function") {
-      fbq("track", "Lead", {
-        content_name: "Consultation Form",
-        currency:     "INR",
-        value:        500,
-      });
+  try {
+
+    // Save to Supabase
+
+    const { error } =
+      await supabase
+        .from("appointments")
+        .insert([
+          {
+            name: form.name,
+            mobile: form.mobile,
+            city: form.city,
+            diabetic: form.diabetic,
+            service: form.service
+          }
+        ]);
+
+    if (error) {
+      throw new Error(
+        error.message
+      );
     }
-    router.push("/thank-you");
-  } else {
-    setServerError(error.message);
+
+    // Save to Zoho CRM
+
+    await fetch(
+      "/api/lead",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          name: form.name,
+          mobile: form.mobile,
+          city: form.city,
+          diabetic: form.diabetic,
+          service: form.service
+        })
+      }
+    );
+
+    // Meta Lead Event
+
+    if (
+      typeof window !==
+      "undefined" &&
+      typeof fbq === "function"
+    ) {
+      fbq(
+        "track",
+        "Lead",
+        {
+          value: 500,
+          currency: "INR",
+          content_name:
+            "Consultation Form"
+        }
+      );
+    }
+
+    router.push(
+      "/thank-you"
+    );
+
+  } catch (err) {
+
+    setServerError(
+      err.message
+    );
+
+  } finally {
+
+    setLoading(false);
+
   }
 };
 
