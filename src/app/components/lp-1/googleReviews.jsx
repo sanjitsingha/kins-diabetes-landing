@@ -5,10 +5,10 @@ import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 
 const REVIEWS = [
-  { name: 'Priya Sharma',    date: 'March 2024',     rating: 5, review: 'Dr. Sekhar Chakraborty is an exceptional doctor. My blood sugar levels have been under control for the past 6 months thanks to his guidance. Highly recommend Kins Diabetes Clinic!', initials: 'PS', color: '#4285F4' },
-  { name: 'Rajesh Kumar',    date: 'February 2024',  rating: 5, review: 'Outstanding care and very detailed consultation. The doctors here take time to explain everything and the treatment plan has worked wonderfully for my Type 2 diabetes.', initials: 'RK', color: '#34A853' },
-  { name: 'Meena Devi',      date: 'January 2024',   rating: 5, review: 'I have been a patient for over a year now. The team is always available and the clinic is well-equipped. My HbA1c dropped significantly after following their diet and medication plan.', initials: 'MD', color: '#EA4335' },
-  { name: 'Amit Ghosh',      date: 'December 2023',  rating: 5, review: 'Best diabetes clinic in Siliguri. Dr. Hironmay Paul explained my condition in a way I could actually understand. Very patient and professional staff throughout.', initials: 'AG', color: '#FBBC05' },
+  { name: 'Ramesh Rai',    date: 'April 2026',     rating: 5, review: 'Its been 10 years that i m doing my check up here all services are good , staffs are polite and good mannered', initials: 'RR', color: '#4285F4' },
+  { name: 'Pushpa Pradhan',    date: 'February 2026',  rating: 5, review: "We use to consult another clinic before but we saw a Facebook ad and we came here to see how the service are and after coming here in kins diabetes all very very good from service to faculty behavior everything is well managed 👍. You'll can also visit kins diabetes", initials: 'PP', color: '#34A853' },
+  { name: 'Sita Chettri',      date: 'January 2024',   rating: 5, review: "I saw a facebook ad and I came here for a whole body check up everything here is very well managed and very kind and helpful staffs thank you for the outstanding services and support", initials: 'SC', color: '#EA4335' },
+  { name: 'Priyadarshan Chettri',      date: 'December 2023',  rating: 5, review: "Kins has helped me a lot in my health journey and all facilities are available canteen, all staffs are very friendly and under one roof doctor is also available", initials: 'PC', color: '#FBBC05' },
   { name: 'Sunita Rai',      date: 'November 2023',  rating: 4, review: 'Very good experience overall. The doctors are knowledgeable and the wait time is reasonable. My diabetes management has improved a lot since I started coming here.', initials: 'SR', color: '#4285F4' },
   { name: 'Debashis Paul',   date: 'October 2023',   rating: 5, review: 'Excellent clinic with caring doctors. They monitor progress regularly and adjust treatment accordingly. I feel confident that my health is in good hands at Kins.', initials: 'DP', color: '#34A853' },
   { name: 'Lakshmi Agarwal', date: 'September 2023', rating: 5, review: 'I was struggling with my sugar levels for years before coming here. Within 3 months, my numbers were finally stable. Truly life-changing experience.', initials: 'LA', color: '#EA4335' },
@@ -48,10 +48,10 @@ const GoogleReviews = () => {
             <GoogleLogo />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-[#0d1b2a] text-lg leading-none">4.9</span>
-                <StarRating rating={5} />
+                <span translate="no" className="font-bold text-[#0d1b2a] text-lg leading-none">4.9</span>
+                <div translate="no"><StarRating rating={5} /></div>
               </div>
-              <div className="text-[#5a7184] text-xs mt-0.5">Based on 1,500+ reviews</div>
+              <div translate="no" className="text-[#5a7184] text-xs mt-0.5">Based on 1,500+ reviews</div>
             </div>
           </div>
         </div>
@@ -71,17 +71,17 @@ const GoogleReviews = () => {
               <div className="bg-white border border-[#e2ecf3] rounded p-5 py-10 mt-10 flex flex-col gap-3 min-h-[350px]">
                 <div className="flex items-center mb-4 justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
+                    <div translate="no" className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
                       {r.initials}
                     </div>
                     <div>
-                      <div className="font-semibold text-[#0d1b2a] text-sm leading-tight">{r.name}</div>
-                      <div className="text-[#94a3b8] text-xs mt-0.5">{r.date}</div>
+                      <div translate="no" className="font-semibold text-[#0d1b2a] capitalize text-sm leading-tight">{r.name}</div>
+                      <div translate="no" className="text-[#94a3b8] text-xs mt-0.5">{r.date}</div>
                     </div>
                   </div>
                   <GoogleLogo />
                 </div>
-                <StarRating rating={r.rating} />
+                <div translate="no"><StarRating rating={r.rating} /></div>
                 <p className="text-[#5a7184] text-sm leading-relaxed flex-1 mt-3">"{r.review}"</p>
               </div>
             </SwiperSlide>

@@ -32,7 +32,10 @@ function LanguageSwitcher() {
     if (code === current) return
 
     if (code === 'en') {
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
+      const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
+      document.cookie = 'googtrans=; ' + exp
+      document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
+      document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
       const url = new URL(window.location.href)
       url.searchParams.delete('lang')
       window.location.href = url.toString()

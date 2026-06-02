@@ -29,7 +29,7 @@ const Counter = ({ target, suffix }) => {
     : count.toFixed(1);
 
   return (
-    <div className="font-sans font-bold text-[60px] text-[#0d1b2a] leading-none tracking-tight">
+    <div translate="no" className="font-sans font-bold text-[60px] text-[#0d1b2a] leading-none tracking-tight">
       {display}
       <span className="text-[#12a4dd] ml-2">{suffix}</span>
     </div>

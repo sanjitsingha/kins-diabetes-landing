@@ -39,7 +39,10 @@ export default function RootLayout({ children }) {
             if (lang && lang !== 'en') {
               document.cookie = 'googtrans=/en/' + lang + '; path=/';
             } else if (!lang || lang === 'en') {
-              document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/';
+              var exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/';
+              document.cookie = 'googtrans=; ' + exp;
+              document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname;
+              document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname;
             }
           })();
         `}} />

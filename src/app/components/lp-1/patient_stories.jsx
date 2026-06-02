@@ -218,8 +218,8 @@ export default function PatientStories() {
                 >
                   <img src={c.img} alt={c.name} loading="lazy" style={S.cardImg} onError={e => { e.target.src = `https://picsum.photos/seed/${c.name}/500/500`; }} />
                   <div className="ps-card-meta" style={S.cardMeta}>
-                    <div className="ps-card-name" style={S.cardName}>{c.name} <span style={S.nameAge}>({c.age}yrs)</span></div>
-                    <div className="ps-hba1c" style={S.hba1c}>
+                    <div className="ps-card-name" style={S.cardName} translate="no">{c.name} <span style={S.nameAge}>({c.age}yrs)</span></div>
+                    <div className="ps-hba1c" style={S.hba1c} translate="no">
                       <span className="ps-lab" style={S.lab}>HBA1C</span>
                       <span className="ps-from-val" style={S.fromVal}>{c.from}</span>
                       <span className="ps-arr" style={S.arr}>→</span>
