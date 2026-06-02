@@ -40,7 +40,7 @@ export async function POST(request) {
         {
           event_name:       'Purchase',
           event_time:       Math.floor(Date.now() / 1000),
-          event_id:         `zoho_patient_${id}_${Date.now()}`,
+          event_id: `zoho_patient_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
           action_source:    'other',        // CRM conversion — not website
           user_data:        userData,
           custom_data: {
