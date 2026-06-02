@@ -5,7 +5,7 @@ export async function POST(request) {
     const body = await request.json();
 
     // Zoho sends these fields via webhook
-    const { Mobile, First_Name, Last_Name, City, id } = body;
+    const { Mobile, First_Name, Last_Name, City } = body;
 
     // Validate — must have at least phone
     if (!Mobile) {
