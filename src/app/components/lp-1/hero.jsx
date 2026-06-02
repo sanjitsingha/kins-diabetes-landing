@@ -94,7 +94,7 @@ const Hero = () => {
                             <img
                                 src="/landing-page/hero-image-right.webp"
                                 alt="Clinic"
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 hover:scale-[1.02] transition-all duration-300"
+                                className="w-full h-full object-cover grayscale  hover:scale-[1.02] transition-all duration-300"
                             />
                         </div>
                     </div>

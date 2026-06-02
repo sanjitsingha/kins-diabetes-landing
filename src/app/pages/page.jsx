@@ -158,7 +158,7 @@ export default function DiabetesCounsellingPage() {
                 .h-scroll { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; padding: 8px 16px 28px; margin: 0 -16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
                 .h-scroll::-webkit-scrollbar { display: none; }
                 .h-scroll > * { flex: 0 0 calc(33% - 12px); scroll-snap-align: start; min-width: 220px; }
-                @media (max-width: 768px) { .h-scroll > * { flex: 0 0 calc(80% - 9px); min-width: unset; } }
+                @media (max-width: 768px) { .h-scroll > * { flex: 0 0 calc(88% - 9px); min-width: unset; } }
                 @keyframes orb-spin { to { transform: rotate(360deg); } }
             `}</style>
 
@@ -167,88 +167,68 @@ export default function DiabetesCounsellingPage() {
                 <Navbar />
                 <HeroSection />
                 <Stats />
-                {/* <PatientsVideoTestimonial /> */}
+                <PatientsVideoTestimonial />
                 <ProblemSection2 />
                 <DoctorsVideo />
                 <ServicesSection />
 
                 {/* ─── COMPARISON TABLE ─────────────────────────── */}
-                <section className="py-14 md:py-24">
+                <section className="py-16 md:py-28 bg-[#f8fafc]">
                     <div className="max-w-[1200px] mx-auto px-4">
-                        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+                        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
                             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
                                 Why choose us
                             </span>
-                            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight mb-4">Kins Diabetes vs. a regular clinic — the difference is clear.</h2>
+                            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight mb-4">Kins Diabetes vs. a regular clinic.</h2>
                             <p className="text-[#5a7184] text-sm sm:text-base">Most clinics give you a prescription and send you home. We build you a complete system.</p>
                         </div>
-                        <div className="max-w-4xl mx-auto bg-white rounded-2xl overflow-hidden border border-[#c8dde8] shadow-md">
-                            {/* Header row */}
-                            <div className="grid grid-cols-[1fr_72px_72px] md:grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8]">
-                                <div className="px-4 py-4 md:px-6 md:py-5 font-bold text-sm" />
 
-                                {/* Kins header */}
-                                <div className="flex items-center justify-center bg-[#12a4dd] text-white font-bold text-sm">
-                                    {/* mobile */}
-                                    <div className="flex flex-col items-center justify-center py-3 md:hidden">
-                                        <span className="text-[10px] font-bold tracking-wide">Kins</span>
+                        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden border border-[#dde6ed] shadow-sm">
+                            <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#dde6ed]">
+
+                                {/* ── Kins column ── */}
+                                <div className="bg-[#f0f9ff] p-7 md:p-10">
+                                    <div className="mb-8">
+                                        <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#12a4dd] mb-1.5">Kins Diabetes</p>
+                                        <h3 className="font-serif text-xl md:text-2xl text-[#0d1b2a] leading-snug">Everything you need, under one roof.</h3>
                                     </div>
-                                    {/* desktop */}
-                                    <div className="hidden md:block text-center px-6 py-5">
-                                        Kins Diabetes
-                                        <span className="block text-[11px] font-medium opacity-85 mt-1 tracking-wide uppercase">NABH · NABL · 14+ Years</span>
-                                    </div>
+                                    <ul className="space-y-5">
+                                        {COMPARE_ROWS.map(({ feature, kins }) => (
+                                            <li key={feature} className="flex items-start gap-3">
+                                                <span className="mt-0.5 w-5 h-5 rounded-full bg-[#16a34a] flex items-center justify-center flex-shrink-0">
+                                                    <Icon name="check" size={11} className="text-white" strokeWidth={3} />
+                                                </span>
+                                                <div>
+                                                    <p className="text-[#0d1b2a] text-sm font-semibold leading-snug">{feature}</p>
+                                                    <p className="text-[#12a4dd] text-xs mt-0.5">{kins}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
 
-                                {/* Regular Clinic header */}
-                                <div className="flex items-center justify-center bg-[#eef2f5] text-[#5a7184] font-bold text-sm">
-                                    {/* mobile */}
-                                    <div className="flex flex-col items-center justify-center py-3 md:hidden">
-                                        <span className="text-[10px] font-bold tracking-wide">Others</span>
+                                {/* ── Other clinics column ── */}
+                                <div className="bg-white p-7 md:p-10">
+                                    <div className="mb-8">
+                                        <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#94a3b8] mb-1.5">Other Clinics</p>
+                                        <h3 className="font-serif text-xl md:text-2xl text-[#94a3b8] leading-snug">The typical experience.</h3>
                                     </div>
-                                    {/* desktop */}
-                                    <div className="hidden md:block px-6 py-5">Regular Clinic</div>
+                                    <ul className="space-y-5">
+                                        {COMPARE_ROWS.map(({ feature, other }) => (
+                                            <li key={feature} className="flex items-start gap-3">
+                                                <span className="mt-0.5 w-5 h-5 rounded-full bg-[#f1f5f9] flex items-center justify-center flex-shrink-0">
+                                                    <Icon name="x" size={11} className="text-[#94a3b8]" strokeWidth={2.5} />
+                                                </span>
+                                                <div>
+                                                    <p className="text-[#94a3b8] text-sm font-semibold leading-snug">{feature}</p>
+                                                    <p className="text-[#b0bec8] text-xs mt-0.5">{other}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
+
                             </div>
-
-                            {/* Data rows */}
-                            {COMPARE_ROWS.map(({ feature, kins, other }) => (
-                                <div key={feature} className="grid grid-cols-[1fr_72px_72px] md:grid-cols-[1.2fr_1fr_1fr] border-b border-[#c8dde8] last:border-0">
-                                    <div className="px-4 py-3 md:px-6 md:py-4 font-semibold text-[#1e2d3d] text-sm flex items-center">{feature}</div>
-
-                                    {/* Kins cell */}
-                                    <div className="flex items-center justify-center bg-[#d6f0fb]">
-                                        {/* mobile: green circle tick */}
-                                        <div className="flex items-center justify-center md:hidden py-3">
-                                            <span className="w-6 h-6 rounded-full bg-[#16a34a] flex items-center justify-center">
-                                                <Icon name="check" size={12} className="text-white" strokeWidth={3} />
-                                            </span>
-                                        </div>
-                                        {/* desktop: icon + text */}
-                                        <div className="hidden md:flex px-6 py-4 text-[#0b7aaa] text-sm">
-                                            <span className="inline-flex items-center gap-2 font-medium">
-                                                <Icon name="check" size={16} className="text-[#16a34a] flex-shrink-0" strokeWidth={3} /> {kins}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Regular Clinic cell */}
-                                    <div className="flex items-center justify-center bg-[#f4f8fb]">
-                                        {/* mobile: red circle X */}
-                                        <div className="flex items-center justify-center md:hidden py-3">
-                                            <span className="w-6 h-6 rounded-full bg-[#ef4444] flex items-center justify-center">
-                                                <Icon name="x" size={12} className="text-white" />
-                                            </span>
-                                        </div>
-                                        {/* desktop: icon + text */}
-                                        <div className="hidden md:flex px-6 py-4 text-[#5a7184] text-sm">
-                                            <span className="inline-flex items-center gap-2 font-medium">
-                                                <Icon name="x" size={16} className="text-[#cbd5e1] flex-shrink-0" /> {other}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </section>

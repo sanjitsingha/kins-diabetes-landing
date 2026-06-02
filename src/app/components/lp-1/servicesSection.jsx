@@ -29,7 +29,9 @@ function Card1({ stackIndex = 0 }) {
       className="sticky mx-auto w-full md:w-[75%] rounded-3xl overflow-hidden shadow-2xl/10 mb-28"
       style={{ top: `${NAVBAR_H + stackIndex * STACK_OFFSET}px` }}
     >
-      <div className={`bg-gradient-to-br ${gradientCls} min-h-[300px] p-8 md:p-12 flex flex-col md:flex-row gap-8`}>
+      <div className={`bg-gradient-to-br ${gradientCls} min-h-[300px] p-8 md:p-12 flex flex-col md:flex-row gap-8 relative`}>
+        {/* Inset border with offset */}
+        <div className="absolute inset-3 rounded-2xl border-2 border-dashed border-yellow-400/30 pointer-events-none" />
         {/* Content */}
         <div className="flex-1 flex flex-col justify-between">
           <div>
@@ -137,7 +139,9 @@ function Card3({ stackIndex = 2 }) {
       className="sticky mx-auto w-full md:w-[75%] rounded-3xl overflow-hidden shadow-2xl/10 mb-28"
       style={{ top: `${NAVBAR_H + stackIndex * STACK_OFFSET}px` }}
     >
-      <div className={`bg-gradient-to-br ${gradientCls} min-h-[300px] p-8 md:p-12 flex flex-col md:flex-row gap-8`}>
+      <div className={`bg-gradient-to-br ${gradientCls} min-h-[300px] p-8 md:p-12 flex flex-col md:flex-row gap-8 relative`}>
+        {/* Inset border with offset */}
+        <div className="absolute inset-3 rounded-2xl border-2 border-dashed border-green-400/30 pointer-events-none" />
         {/* Content */}
         <div className="flex-1 flex flex-col justify-between">
           <div>
@@ -228,7 +232,7 @@ function Card4({ stackIndex = 3 }) {
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ServicesSection() {
   return (
-    <div className="w-full bg-[#f4f8fb]">
+    <div className="w-full bg-white">
       <div className="max-w-[1200px] mx-auto px-4 py-20">
 
         {/* Section heading */}

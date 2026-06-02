@@ -180,7 +180,7 @@ export default function ProblemsSection() {
 
       {/* ── Mobile: sticky scroll animation ── */}
       <section ref={mobileSectionRef} className="lg:hidden bg-white relative" style={{ height: '480vh' }}>
-        <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden gap-6">
+        <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden gap-22">
 
           {/* Heading */}
           <div className="text-center z-10 px-4">
