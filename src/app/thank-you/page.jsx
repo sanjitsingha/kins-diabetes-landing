@@ -19,16 +19,21 @@ const STEPS = [
 ];
 
 export default function ThankYouPage() {
-  useEffect(() => {
-    if (typeof fbq === "function") {
-      fbq("track", "CompleteRegistration", {
-        content_name: "Consultation Booked",
-        currency:     "INR",
-        value: "500",
-        status:       true,
-      });
-    }
-  }, []);
+ useEffect(() => {
+  if (typeof fbq !== "function") return;
+
+  const params = new URLSearchParams(window.location.search);
+
+  fbq("track", "CompleteRegistration", {
+    content_name: "Consultation Booked",
+    currency:     "INR",
+    value:        500,        // ← fixed: was "500" string, now number
+    status:       true,
+    ph:           params.get("ph") || "",
+    fn:           params.get("fn") || "",
+    ct:           params.get("ct") || "",
+  });
+}, []);
 
   return (
     <div className="min-h-screen bg-[#faf8f4] text-[#0d1c2e] flex flex-col">

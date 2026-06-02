@@ -207,28 +207,22 @@ body: JSON.stringify({
 })
 });
 
-    // Meta Lead Event
+// Meta Lead Event — with user data for match quality
+if (typeof window !== "undefined" && typeof fbq === "function") {
+  fbq("track", "Lead", {
+    value:        500,
+    currency:     "INR",
+    content_name: "Consultation Form",
+    ph:           form.mobile,
+    fn:           form.name.split(" ")[0].toLowerCase(),
+    ct:           form.city.toLowerCase(),
+  });
+}
 
-    if (
-      typeof window !==
-      "undefined" &&
-      typeof fbq === "function"
-    ) {
-      fbq(
-        "track",
-        "Lead",
-        {
-          value: 500,
-          currency: "INR",
-          content_name:
-            "Consultation Form"
-        }
-      );
-    }
-
-    router.push(
-      "/thank-you"
-    );
+// Pass user data to thank-you page via URL for CompleteRegistration match quality
+router.push(
+  `/thank-you?ph=${encodeURIComponent(form.mobile)}&fn=${encodeURIComponent(form.name.split(" ")[0].toLowerCase())}&ct=${encodeURIComponent(form.city.toLowerCase())}`
+);
 
   } catch (err) {
 
