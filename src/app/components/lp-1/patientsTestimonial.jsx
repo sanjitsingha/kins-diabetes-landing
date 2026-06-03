@@ -6,11 +6,10 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 
 const VIDEOS = [
-  '/patientsVideo/PTV1.mp4',
-  '/patientsVideo/PTV2.mp4',
-  '/patientsVideo/PTV3.mp4',
-  '/patientsVideo/PTV4.mp4',
-
+  'https://res.cloudinary.com/diathbaqh/video/upload/q_auto:good,f_auto/v1780475508/PTV1_jtglnt.mp4',
+  'https://res.cloudinary.com/diathbaqh/video/upload/q_auto:good,f_auto/v1780475512/PTV2_zgiy64.mp4',
+  'https://res.cloudinary.com/diathbaqh/video/upload/q_auto:good,f_auto/v1780475503/PTV3_byiphp.mp4',
+  'https://res.cloudinary.com/diathbaqh/video/upload/q_auto:good,f_auto/v1780475502/PTV4_houhnl.mp4',
 ]
 
 const VideoCard = ({ src }) => {
