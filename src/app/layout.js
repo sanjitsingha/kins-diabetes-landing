@@ -101,6 +101,12 @@ export default function RootLayout({ children }) {
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
         />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="b361ee75-7067-4043-a9be-baf64a4f0f81"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
