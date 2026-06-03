@@ -193,7 +193,7 @@ export default function ProblemsSection() {
           </div>
 
           {/* Glucometer + overlaid cards */}
-          <div className="relative w-72 shrink-0">
+          <div className="relative w-[340px] shrink-0">
             <Image
               src="/landing-page/glucometer.png"
               alt="Glucometer"
@@ -230,20 +230,20 @@ export default function ProblemsSection() {
                     transform: `translateX(-50%) translateY(${y}px)`,
                     opacity,
                     pointerEvents: opacity > 0.05 ? 'auto' : 'none',
-                    width: 256,
+                    width: 312,
                   }}
                 >
-                  <div className="rounded-xl bg-white border border-[#c8dde8] shadow-2xl px-4 py-3.5">
+                  <div className="rounded-xl bg-white border border-[#c8dde8] shadow-2xl px-5 py-4">
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
                       style={{ background: problem.iconBg }}
                     >
-                      <Icon size={16} color={problem.iconColor} />
+                      <Icon size={20} color={problem.iconColor} />
                     </div>
-                    <h3 className="font-semibold text-[#092540] text-sm mb-1 leading-snug">
+                    <h3 className="font-semibold text-[#092540] text-base mb-1.5 leading-snug">
                       {problem.title}
                     </h3>
-                    <p className="text-xs text-[#5a7184] leading-relaxed">{problem.desc}</p>
+                    <p className="text-sm text-[#5a7184] leading-relaxed">{problem.desc}</p>
                   </div>
                 </div>
               )

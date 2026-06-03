@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -10,13 +10,25 @@ const VIDEOS = [
   '/patientsVideo/PTV2.mp4',
   '/patientsVideo/PTV3.mp4',
   '/patientsVideo/PTV4.mp4',
-  '/patientsVideo/PTV5.mp4',
-  '/patientsVideo/PTV6.mp4',
+
 ]
 
 const VideoCard = ({ src }) => {
-  const videoRef = useRef(null)
+  const videoRef     = useRef(null)
+  const containerRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [mounted, setMounted]     = useState(false)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setMounted(true); observer.disconnect() } },
+      { rootMargin: '100px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const togglePlay = () => {
     const video = videoRef.current
@@ -26,18 +38,19 @@ const VideoCard = ({ src }) => {
   }
 
   return (
-    <div className="relative w-full rounded-xl overflow-hidden bg-black aspect-9/16">
-      <video
-        ref={videoRef}
-        className="w-full h-full object-cover"
-        preload="metadata"
-        playsInline
-        onEnded={() => setIsPlaying(false)}
-        onClick={togglePlay}
-      >
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <div ref={containerRef} className="relative w-full rounded-xl overflow-hidden bg-black aspect-9/16">
+      {mounted && (
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover"
+          preload="none"
+          playsInline
+          onEnded={() => setIsPlaying(false)}
+          onClick={togglePlay}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      )}
       <button
         onClick={togglePlay}
         aria-label={isPlaying ? 'Pause' : 'Play'}

@@ -48,10 +48,10 @@ const GoogleReviews = () => {
             <GoogleLogo />
             <div>
               <div className="flex items-center gap-1.5">
-                <span translate="no" className="font-bold text-[#0d1b2a] text-lg leading-none">4.9</span>
+                <span translate="no" className="font-bold text-[#0d1b2a] text-lg leading-none">4.8</span>
                 <div translate="no"><StarRating rating={5} /></div>
               </div>
-              <div translate="no" className="text-[#5a7184] text-xs mt-0.5">Based on 1,500+ reviews</div>
+              <div translate="no" className="text-[#5a7184] text-xs mt-0.5">Based on 1,400+ reviews</div>
             </div>
           </div>
         </div>

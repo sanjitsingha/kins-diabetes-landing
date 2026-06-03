@@ -1,22 +1,59 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
+
+function YouTubeFacade({ youtubeId, title }) {
+  const [active, setActive] = useState(false)
+
+  if (active) {
+    return (
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&autoplay=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute inset-0 w-full h-full"
+      />
+    )
+  }
+
+  return (
+    <button
+      className="absolute inset-0 w-full h-full group cursor-pointer border-0 p-0"
+      onClick={() => setActive(true)}
+      aria-label={`Play ${title}`}
+    >
+      <img
+        src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
+        alt={title}
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+        <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <polygon points="6,3 20,12 6,21" />
+          </svg>
+        </div>
+      </div>
+    </button>
+  )
+}
 
 const VIDEOS = [
   {
     youtubeId: 'YnxB8L76R_0',
-    doctor: 'Dr. Sekhar Chakraborty',
+    doctor: 'Dr. Hiranmoy Paul',
     designation: 'Senior Consultant · Diabetologist',
-    title: 'Understanding Diabetes Management',
-    description: 'Dr. Sekhar Chakraborty explains how to effectively manage Type 2 diabetes through lifestyle changes, proper medication, and continuous monitoring.',
+    title: 'Insulin Myths vs Facts: Expert Insights You Can Trust',
+    description: "When it comes to diabetes, there are many myths surrounding insulin. Let’s set the record straight with expert insights you can trust.Understand the truth and make informed decisions about your health.",
   },
   {
     youtubeId: 'IGGsY7jHkMU',
     doctor: 'Dr. Hironmay Paul',
     designation: 'Senior Consultant · Diabetologist',
-    title: 'Nutrition & Diet for Diabetics',
-    description: 'Dr. Hironmay Paul walks you through the role of nutrition in controlling blood sugar levels, debunking common myths and providing practical dietary advice.',
+    title: 'How to Manage Diabetes & Hypertension Together',
+    description: ' Diabetes and Hypertension — a dangerous combination that affects millions worldwide. But how exactly are these two conditions connected? Why do people with diabetes ...',
   },
 ]
 
@@ -44,14 +81,7 @@ const DoctorsVideo = () => {
               <div className="bg-white rounded-2xl border border-[#c8dde8] shadow-sm overflow-hidden">
                 <div className="flex flex-col md:grid md:grid-cols-[1.3fr_1fr]">
                   <div className="relative w-full h-42 md:h-auto md:aspect-video bg-black">
-                    <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`}
-                      title={v.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                      loading="lazy"
-                    />
+                    <YouTubeFacade youtubeId={v.youtubeId} title={v.title} />
                   </div>
                   <div className="p-6 flex flex-col justify-between gap-4 min-h-[300px] md:min-h-[260px]">
                     <div>
