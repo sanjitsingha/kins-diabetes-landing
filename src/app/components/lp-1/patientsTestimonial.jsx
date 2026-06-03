@@ -16,8 +16,9 @@ const VIDEOS = [
 const VideoCard = ({ src }) => {
   const videoRef     = useRef(null)
   const containerRef = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [mounted, setMounted]     = useState(false)
+  const [isPlaying, setIsPlaying]   = useState(false)
+  const [mounted, setMounted]       = useState(false)
+  const [pendingPlay, setPendingPlay] = useState(false)
 
   useEffect(() => {
     const el = containerRef.current
@@ -30,7 +31,15 @@ const VideoCard = ({ src }) => {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (mounted && pendingPlay) {
+      const video = videoRef.current
+      if (video) { video.play(); setIsPlaying(true); setPendingPlay(false) }
+    }
+  }, [mounted, pendingPlay])
+
   const togglePlay = () => {
+    if (!mounted) { setMounted(true); setPendingPlay(true); return }
     const video = videoRef.current
     if (!video) return
     if (video.paused) { video.play(); setIsPlaying(true) }
@@ -43,8 +52,9 @@ const VideoCard = ({ src }) => {
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
-          preload="none"
+          preload="metadata"
           playsInline
+          onLoadedMetadata={() => { if (videoRef.current) videoRef.current.currentTime = 0.01 }}
           onEnded={() => setIsPlaying(false)}
           onClick={togglePlay}
         >
