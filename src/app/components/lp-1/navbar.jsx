@@ -55,7 +55,7 @@ function LanguageSwitcher() {
   const active = LANGS.find(l => l.code === current) || LANGS[0]
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative" translate="no">
       <button
         onClick={() => setOpen(o => !o)}
         className="flex items-center gap-1.5 h-9 px-3 rounded-full border border-[#c8dde8] bg-white hover:bg-[#f0f8fd] transition-colors text-sm font-semibold text-[#0d1b2a]"
@@ -104,6 +104,7 @@ const Navbar = () => {
 
   return (
     <header
+      translate="no"
       className={`fixed top-0 left-0 w-full z-50 border-b border-[#c8dde8] bg-white/95 backdrop-blur-md transition-transform duration-500 ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       }`}
