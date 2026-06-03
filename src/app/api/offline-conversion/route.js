@@ -4,8 +4,9 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    // Zoho sends these fields via webhook
-    const { Mobile, First_Name, Last_Name, City } = body;
+    // Zoho wraps the record in data: [{}] — handle both formats
+    const record = Array.isArray(body?.data) ? body.data[0] : body;
+    const { Mobile, First_Name, Last_Name, City } = record;
 
     // Validate — must have at least phone
     if (!Mobile) {
