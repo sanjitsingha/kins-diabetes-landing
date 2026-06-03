@@ -31,27 +31,25 @@ function LanguageSwitcher() {
     setOpen(false)
     if (code === current) return
 
-    if (code === 'en') {
-      const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
-      document.cookie = 'googtrans=; ' + exp
-      document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
-      document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
-      const url = new URL(window.location.href)
-      url.searchParams.delete('lang')
-      window.location.href = url.toString()
-      return
-    }
-
-    const sel = document.querySelector('.goog-te-combo')
-    if (sel) {
-      sel.value = code
-      sel.dispatchEvent(new Event('change'))
-    }
+    // Always clear old cookie first across all domain variants
+    const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
+    document.cookie = 'googtrans=; ' + exp
+    document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
+    document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
 
     const url = new URL(window.location.href)
-    url.searchParams.set('lang', code)
-    history.replaceState(null, '', url.toString())
-    setCurrent(code)
+
+    if (code !== 'en') {
+      // Set cookie with and without domain so Google Translate finds it
+      document.cookie = 'googtrans=/en/' + code + '; path=/'
+      document.cookie = 'googtrans=/en/' + code + '; path=/; domain=.' + location.hostname
+      url.searchParams.set('lang', code)
+    } else {
+      url.searchParams.delete('lang')
+    }
+
+    // Always full-reload so Google Translate picks up the fresh cookie state
+    window.location.href = url.toString()
   }
 
   const active = LANGS.find(l => l.code === current) || LANGS[0]

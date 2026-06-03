@@ -38,6 +38,7 @@ export default function RootLayout({ children }) {
             var lang = new URLSearchParams(location.search).get('lang');
             if (lang && lang !== 'en') {
               document.cookie = 'googtrans=/en/' + lang + '; path=/';
+              document.cookie = 'googtrans=/en/' + lang + '; path=/; domain=.' + location.hostname;
             } else if (!lang || lang === 'en') {
               var exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/';
               document.cookie = 'googtrans=; ' + exp;
