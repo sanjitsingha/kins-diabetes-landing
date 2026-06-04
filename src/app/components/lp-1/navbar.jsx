@@ -33,12 +33,8 @@ function LanguageSwitcher() {
 
     if (code === 'en') {
       localStorage.removeItem('kins_lang')
-      // Clear the googtrans cookie Google Translate sets internally, then reload
-      const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
-      document.cookie = 'googtrans=; ' + exp
-      document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
-      document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
-      window.location.reload()
+      // Server-side cookie clear — 100% reliable vs document.cookie
+      window.location.href = '/api/reset-lang'
       return
     }
 
