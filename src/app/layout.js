@@ -62,7 +62,8 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        <Script id="gtranslate-settings" strategy="beforeInteractive">{`
+        {/* GTranslate settings — plain script tag guarantees it runs before CDN script */}
+        <script dangerouslySetInnerHTML={{__html: `
           window.gtranslateSettings = {
             default_language: 'en',
             languages: ['en', 'hi', 'bn'],
@@ -70,7 +71,7 @@ export default function RootLayout({ children }) {
             flag_style: 'none',
             native_language_names: true,
           };
-        `}</Script>
+        `}} />
         <Script
           src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
           strategy="afterInteractive"

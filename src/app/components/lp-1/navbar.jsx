@@ -30,14 +30,20 @@ function LanguageSwitcher() {
   function selectLang(code) {
     setOpen(false)
     if (code === current) return
-    if (typeof doGTranslate !== 'function') return
-
-    doGTranslate('en|' + code)
 
     if (code === 'en') localStorage.removeItem('kins_lang')
     else localStorage.setItem('kins_lang', code)
 
     setCurrent(code)
+
+    const apply = (attempts = 0) => {
+      if (typeof doGTranslate === 'function') {
+        doGTranslate('en|' + code)
+      } else if (attempts < 20) {
+        setTimeout(() => apply(attempts + 1), 200)
+      }
+    }
+    apply()
   }
 
   const active = LANGS.find(l => l.code === current) || LANGS[0]
