@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Hide GTranslate default widget — we use our own navbar switcher */
+#gtranslate_wrapper,
+.gtranslate_wrapper,
+.gt_float_switcher { display: none !important; }
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

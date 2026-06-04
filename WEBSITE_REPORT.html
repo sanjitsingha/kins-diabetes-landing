@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Kins Diabetes — Website Technical Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13.5px;
+    color: #1e2d3d;
+    background: #fff;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 56px;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(135deg, #0b7aaa 0%, #12a4dd 60%, #5bc8f0 100%);
+    color: white;
+    padding: 56px 56px 48px;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 40px;
+  }
+  .cover-logo {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+  .cover p {
+    opacity: 0.85;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .cover-badge {
+    display: inline-block;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 36px;
+    page-break-inside: avoid;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #092540;
+    border-left: 4px solid #12a4dd;
+    padding-left: 12px;
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #12a4dd;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 14px 0 8px;
+  }
+
+  p { margin-bottom: 10px; }
+
+  /* ── Tables ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-bottom: 14px;
+  }
+  thead tr {
+    background: #f0f8fd;
+  }
+  th {
+    text-align: left;
+    padding: 9px 12px;
+    font-weight: 600;
+    color: #0b7aaa;
+    border-bottom: 2px solid #c8dde8;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e8f3f9;
+    color: #2c3e50;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #fafcfe; }
+
+  code {
+    background: #f0f8fd;
+    color: #0b7aaa;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── Flow diagram ── */
+  .flow-box {
+    background: #f4f8fb;
+    border: 1px solid #c8dde8;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #1e2d3d;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+  li { margin-bottom: 4px; }
+
+  /* ── Info cards ── */
+  .info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f0f8fd;
+    border: 1px solid #c8dde8;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .info-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #0b7aaa;
+    margin-bottom: 2px;
+  }
+  .info-card-value {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    color: #092540;
+    font-weight: 600;
+  }
+
+  .tag {
+    display: inline-block;
+    background: #e4f7fb;
+    color: #0b7aaa;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin: 2px 2px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #e8f3f9;
+    margin: 28px 0;
+  }
+
+  strong { color: #092540; }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e8f3f9;
+    font-size: 11px;
+    color: #8aa3b5;
+    text-align: center;
+  }
+
+  @media print {
+    body { font-size: 12.5px; }
+    .cover { border-radius: 0; }
+    .page { padding: 32px 40px; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-logo">Kins Diabetes · The Sugar Experts</div>
+  <h1>Website Technical Report</h1>
+  <p><strong>Prepared for:</strong> Management Review</p>
+  <p><strong>Date:</strong> June 2026</p>
+  <p><strong>Website:</strong> kinsdiabetes.com</p>
+  <div class="cover-badge">Confidential — Internal Use Only</div>
+</div>
+
+<div class="page">
+
+  <!-- Section 1 -->
+  <div class="section">
+    <h2>1. Pages on the Website</h2>
+    <table>
+      <thead><tr><th>Page</th><th>Web Address</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Main Landing Page</td><td><code>/</code></td><td>Primary marketing page shown to visitors</td></tr>
+        <tr><td>Book Appointment</td><td><code>/book-appointment</code></td><td>Form where patient fills their details</td></tr>
+        <tr><td>Thank You</td><td><code>/thank-you</code></td><td>Shown after form is successfully submitted</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr/>
+
+  <!-- Section 2 -->
+  <div class="section">
+    <h2>2. The Appointment Booking Form</h2>
+    <p><strong>Page:</strong> <code>/book-appointment</code></p>
+    <h3>Fields collected from the patient</h3>
+    <table>
+      <thead><tr><th>Field</th><th>What it asks</th></tr></thead>
+      <tbody>
+        <tr><td>Full Name</td><td>Patient's name</td></tr>
+        <tr><td>Mobile Number</td><td>10-digit Indian mobile number</td></tr>
+        <tr><td>City</td><td>Patient's city (e.g. Siliguri, Darjeeling)</td></tr>
+        <tr><td>Are You Diabetic?</td><td>Yes / No radio button</td></tr>
+        <tr><td>How Can I Help You?</td><td>Doctor's Consultation · Diabetes Counselling · Whole Body Check-Up</td></tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>Smart URL feature — <code>?phone=</code> parameter:</strong><br/>
+      If someone clicks an ad that has a phone number in the URL (e.g. <code>/book-appointment?phone=9876543210</code>), the mobile field is <strong>automatically pre-filled</strong>. The patient only needs to fill in name, city, and service — this reduces drop-offs from ad clicks.
+    </p>
+  </div>
+
+  <hr/>
+
+  <!-- Section 3 -->
+  <div class="section">
+    <h2>3. Where the Lead Data Goes</h2>
+    <p>When a patient clicks <strong>"Book My Free Counselling"</strong>, the following happens in sequence:</p>
+    <div class="flow-box">Patient submits form
+       │
+       ▼
+① Saved to Supabase (our database) — instant backup
+       │
+       ▼
+② Sent to Zoho CRM — appears as a new Lead for the sales team
+       │
+       ▼
+③ Meta "Lead" event fired — tells Facebook/Instagram an ad lead was captured
+       │
+       ▼
+④ Patient is redirected to /thank-you page
+       │
+       ▼
+⑤ Meta "CompleteRegistration" event fired on thank-you page</div>
+  </div>
+
+  <hr/>
+
+  <!-- Section 4 -->
+  <div class="section">
+    <h2>4. Ad Tracking &amp; Conversions (Meta / Facebook)</h2>
+    <p>We run three types of conversion tracking for Meta ads:</p>
+
+    <h3>4a. Browser Pixel (Client-Side)</h3>
+    <table>
+      <thead><tr><th>Event</th><th>When it fires</th><th>What it tells Meta</th></tr></thead>
+      <tbody>
+        <tr><td><code>PageView</code></td><td>Every page load</td><td>Someone visited the site</td></tr>
+        <tr><td><code>Lead</code></td><td>Form submitted</td><td>A lead was captured (value: ₹500)</td></tr>
+        <tr><td><code>CompleteRegistration</code></td><td>Thank-you page loaded</td><td>Lead completed registration (value: ₹500)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4b. Meta Conversions API — Offline Conversion (Server-Side)</h3>
+    <p>
+      This is a <strong>second, more powerful layer</strong> of tracking. When a lead is converted to a patient inside Zoho CRM, Zoho triggers our server which sends a <code>Purchase</code> event directly to Meta's servers.
+      <br/><br/>
+      <strong>Why this matters:</strong> Browser tracking can be blocked by ad blockers or iOS privacy settings. The server-to-server API bypasses all of that, giving Meta better data to optimise ad delivery.
+      <br/><strong>Event sent:</strong> <code>Purchase</code> (Patient Converted) · Currency: INR
+      <br/><strong>Privacy:</strong> All personal data (phone, name, city) is <strong>hashed with SHA-256</strong> before being sent to Meta. Meta never receives raw personal information.
+    </p>
+
+    <h3>4c. UTM Parameters</h3>
+    <table>
+      <thead><tr><th>Parameter</th><th>Example</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>utm_source</code></td><td>facebook</td><td>Which platform</td></tr>
+        <tr><td><code>utm_medium</code></td><td>cpc</td><td>Type of traffic</td></tr>
+        <tr><td><code>utm_campaign</code></td><td>siliguri_diabetes_june</td><td>Campaign name</td></tr>
+      </tbody>
+    </table>
+    <p>These are automatically captured from the URL and saved to Zoho with each lead.</p>
+  </div>
+
+  <hr/>
+
+  <!-- Section 5 -->
+  <div class="section">
+    <h2>5. Google Tag Manager (GTM)</h2>
+    <div class="info-card">
+      <div>
+        <div class="info-card-label">GTM Container ID</div>
+        <div class="info-card-value">GTM-PV54K5T5</div>
+      </div>
+    </div>
+    <p>
+      Google Tag Manager is a container that loads first, before everything else on the page.
+      It manages all tracking scripts (Meta Pixel, Google Analytics, etc.) in one place.
+      If we ever need to add a new tracking pixel or change tracking logic, we do it inside GTM —
+      <strong>no code changes needed on the website.</strong>
+    </p>
+  </div>
+
+  <hr/>
+
+  <!-- Section 6 -->
+  <div class="section">
+    <h2>6. Language / Translation System</h2>
+    <p>The website supports <strong>3 languages:</strong></p>
+    <p>
+      <span class="tag">English</span>
+      <span class="tag">Hindi</span>
+      <span class="tag">Bengali</span>
+    </p>
+    <p style="margin-top:10px;">
+      Language is saved in the URL (e.g. <code>?lang=hi</code>, <code>?lang=bn</code>) so sharing
+      the link keeps the language active for the recipient.
+    </p>
+  </div>
+
+  <hr/>
+
+  <!-- Section 7 -->
+  <div class="section">
+    <h2>7. Lead Flow Summary (From Ad Click to Zoho)</h2>
+    <div class="flow-box">Facebook/Instagram Ad
+        │  (click — UTM params in URL)
+        ▼
+Landing Page (/?utm_source=facebook&utm_campaign=...)
+        │  (visitor scrolls, reads, watches videos)
+        ▼
+Clicks "Book Free Counselling"
+        │
+        ▼
+/book-appointment?phone=XXXXXXXXXX  ← phone pre-filled if from ad
+        │  (fills name, city, diabetic status, service)
+        ▼
+Form Submit
+        │
+        ├──► Supabase DB (appointments table)  ← backup
+        ├──► Zoho CRM (new Lead with UTM data)
+        ├──► Meta Pixel "Lead" event (₹500 value)
+        │
+        ▼
+/thank-you?ph=...&fn=...&ct=...
+        │
+        └──► Meta Pixel "CompleteRegistration" event</div>
+  </div>
+
+  <div class="footer">
+    © 2026 Kins Diabetes — The Sugar Experts · Siliguri, North Bengal &nbsp;|&nbsp; kinsdiabetes.com &nbsp;|&nbsp; Internal Report — June 2026
+  </div>
+
+</div>
+</body>
+</html>

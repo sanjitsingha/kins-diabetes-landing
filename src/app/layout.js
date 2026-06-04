@@ -32,21 +32,6 @@ export default function RootLayout({ children }) {
             })(window,document,'script','dataLayer','GTM-PV54K5T5');`,
           }}
         />
-        {/* Google Translate cookie set before page renders */}
-        <script dangerouslySetInnerHTML={{__html: `
-          (function() {
-            var lang = new URLSearchParams(location.search).get('lang');
-            if (lang && lang !== 'en') {
-              document.cookie = 'googtrans=/en/' + lang + '; path=/';
-              document.cookie = 'googtrans=/en/' + lang + '; path=/; domain=.' + location.hostname;
-            } else if (!lang || lang === 'en') {
-              var exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/';
-              document.cookie = 'googtrans=; ' + exp;
-              document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname;
-              document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname;
-            }
-          })();
-        `}} />
 
         {/* META Pixel Base Code */}
         <script dangerouslySetInnerHTML={{__html: `
@@ -77,31 +62,28 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        <Script id="google-translate-init" strategy="afterInteractive">{`
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-              { pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false },
-              'google_translate_element'
-            );
-            var check = setInterval(function() {
-              var sel = document.querySelector('.goog-te-combo');
-              if (sel) {
-                clearInterval(check);
-                sel.addEventListener('change', function() {
-                  var v = sel.value;
-                  var url = new URL(location.href);
-                  if (!v || v === 'en') url.searchParams.delete('lang');
-                  else url.searchParams.set('lang', v);
-                  history.replaceState(null, '', url.toString());
-                });
-              }
-            }, 300);
-          }
+        <Script id="gtranslate-settings" strategy="beforeInteractive">{`
+          window.gtranslateSettings = {
+            default_language: 'en',
+            languages: ['en', 'hi', 'bn'],
+            wrapper_selector: '#gtranslate_wrapper',
+            flag_style: 'none',
+            native_language_names: true,
+          };
         `}</Script>
         <Script
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
           strategy="afterInteractive"
         />
+        <Script id="gtranslate-restore" strategy="afterInteractive">{`
+          var _gt = setInterval(function() {
+            if (typeof doGTranslate === 'function') {
+              clearInterval(_gt);
+              var saved = localStorage.getItem('kins_lang');
+              if (saved && saved !== 'en') doGTranslate('en|' + saved);
+            }
+          }, 200);
+        `}</Script>
         <Script
           defer
           src="https://cloud.umami.is/script.js"

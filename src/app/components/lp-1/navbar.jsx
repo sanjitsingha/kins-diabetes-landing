@@ -15,7 +15,7 @@ function LanguageSwitcher() {
   const ref = useRef(null)
 
   useEffect(() => {
-    const lang = new URLSearchParams(window.location.search).get('lang') || 'en'
+    const lang = localStorage.getItem('kins_lang') || 'en'
     setCurrent(lang)
   }, [])
 
@@ -30,26 +30,14 @@ function LanguageSwitcher() {
   function selectLang(code) {
     setOpen(false)
     if (code === current) return
+    if (typeof doGTranslate !== 'function') return
 
-    // Always clear old cookie first across all domain variants
-    const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
-    document.cookie = 'googtrans=; ' + exp
-    document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
-    document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
+    doGTranslate('en|' + code)
 
-    const url = new URL(window.location.href)
+    if (code === 'en') localStorage.removeItem('kins_lang')
+    else localStorage.setItem('kins_lang', code)
 
-    if (code !== 'en') {
-      // Set cookie with and without domain so Google Translate finds it
-      document.cookie = 'googtrans=/en/' + code + '; path=/'
-      document.cookie = 'googtrans=/en/' + code + '; path=/; domain=.' + location.hostname
-      url.searchParams.set('lang', code)
-    } else {
-      url.searchParams.delete('lang')
-    }
-
-    // Always full-reload so Google Translate picks up the fresh cookie state
-    window.location.href = url.toString()
+    setCurrent(code)
   }
 
   const active = LANGS.find(l => l.code === current) || LANGS[0]
@@ -109,8 +97,8 @@ const Navbar = () => {
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* Hidden Google Translate mount point — must stay in DOM */}
-      <div id="google_translate_element" className="hidden" />
+      {/* Hidden GTranslate mount point */}
+      <div id="gtranslate_wrapper" style={{ display: 'none' }} />
 
       <div className="max-w-[1200px] px-6 mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
         <a href="/" className="md:h-[42px] h-[30px] shrink-0">
