@@ -12,13 +12,15 @@ const VIDEOS = [
   'https://res.cloudinary.com/diathbaqh/video/upload/q_auto:good,f_auto/v1780475502/PTV4_houhnl.mp4',
 ]
 
-const VideoCard = ({ src }) => {
+// ── VideoCard ──────────────────────────────────────────────────────────────────
+const VideoCard = ({ src, isActive, onEnded, onManualPlay }) => {
   const videoRef     = useRef(null)
   const containerRef = useRef(null)
-  const [isPlaying, setIsPlaying]   = useState(false)
-  const [mounted, setMounted]       = useState(false)
-  const [pendingPlay, setPendingPlay] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [mounted, setMounted]     = useState(false)
+  const [muted, setMuted]         = useState(true)
 
+  // Lazy-mount when card enters viewport
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -30,19 +32,36 @@ const VideoCard = ({ src }) => {
     return () => observer.disconnect()
   }, [])
 
+  // Drive playback from isActive prop
   useEffect(() => {
-    if (mounted && pendingPlay) {
+    if (isActive) {
+      if (!mounted) { setMounted(true); return } // re-fires below when mounted flips
       const video = videoRef.current
-      if (video) { video.play(); setIsPlaying(true); setPendingPlay(false) }
+      if (!video) return
+      video.muted = true
+      setMuted(true)
+      video.currentTime = 0
+      video.play().then(() => setIsPlaying(true)).catch(() => {})
+    } else {
+      const video = videoRef.current
+      if (video && !video.paused) { video.pause(); video.currentTime = 0; setIsPlaying(false) }
     }
-  }, [mounted, pendingPlay])
+  }, [isActive, mounted])
 
   const togglePlay = () => {
-    if (!mounted) { setMounted(true); setPendingPlay(true); return }
+    onManualPlay?.()
     const video = videoRef.current
-    if (!video) return
+    if (!video) { setMounted(true); return }
     if (video.paused) { video.play(); setIsPlaying(true) }
     else              { video.pause(); setIsPlaying(false) }
+  }
+
+  const toggleMute = (e) => {
+    e.stopPropagation()
+    const video = videoRef.current
+    if (!video) return
+    video.muted = !video.muted
+    setMuted(video.muted)
   }
 
   return (
@@ -53,13 +72,16 @@ const VideoCard = ({ src }) => {
           className="w-full h-full object-cover"
           preload="metadata"
           playsInline
+          muted
           onLoadedMetadata={() => { if (videoRef.current) videoRef.current.currentTime = 0.01 }}
-          onEnded={() => setIsPlaying(false)}
+          onEnded={() => { setIsPlaying(false); onEnded?.() }}
           onClick={togglePlay}
         >
           <source src={src} type="video/mp4" />
         </video>
       )}
+
+      {/* Play / Pause overlay */}
       <button
         onClick={togglePlay}
         aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -70,34 +92,81 @@ const VideoCard = ({ src }) => {
           transition-all duration-200 group-hover:bg-[#12a4dd] group-hover:scale-110
           ${isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}
         `}>
-          {isPlaying ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-              <rect x="5" y="3" width="4" height="18" rx="1" />
-              <rect x="15" y="3" width="4" height="18" rx="1" />
-            </svg>
-          ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-              <polygon points="5,3 19,12 5,21" />
-            </svg>
-          )}
+          {isPlaying
+            ? <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/></svg>
+            : <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+          }
         </div>
       </button>
+
+      {/* Mute toggle — bottom-right, only while playing */}
+      {isPlaying && (
+        <button
+          onClick={toggleMute}
+          aria-label={muted ? 'Unmute' : 'Mute'}
+          className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-[#12a4dd] transition-colors"
+        >
+          {muted
+            ? <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/></svg>
+            : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          }
+        </button>
+      )}
+
+      {/* "Tap to unmute" hint */}
+      {isPlaying && muted && (
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/50 rounded-full px-2.5 py-1 pointer-events-none">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/></svg>
+          <span className="text-white text-[10px] font-medium">Tap 🔊 to unmute</span>
+        </div>
+      )}
     </div>
   )
 }
 
+// ── PatientsTestimonial ────────────────────────────────────────────────────────
 const PatientsTestimonial = () => {
-  const swiperRef = useRef(null)
+  const swiperRef   = useRef(null)
+  const sectionRef  = useRef(null)
+  const hasStarted  = useRef(false)
   const [isBeginning, setIsBeginning] = useState(true)
-  const [isEnd, setIsEnd] = useState(false)
+  const [isEnd, setIsEnd]             = useState(false)
+  const [activeIndex, setActiveIndex] = useState(-1)
 
   const updateNavState = (swiper) => {
     setIsBeginning(swiper.isBeginning)
     setIsEnd(swiper.isEnd)
   }
 
+  // Auto-start when section reaches center of viewport
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted.current) {
+          hasStarted.current = true
+          setActiveIndex(0)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '-25% 0px' } // fires when section is in center ~50% of viewport
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Slide Swiper to match active video
+  useEffect(() => {
+    if (activeIndex >= 0) swiperRef.current?.slideTo(activeIndex, 500)
+  }, [activeIndex])
+
+  const handleEnded = (i) => {
+    setActiveIndex(i + 1 < VIDEOS.length ? i + 1 : -1)
+  }
+
   return (
-    <div className="w-full bg-white">
+    <div ref={sectionRef} className="w-full bg-white">
       <div className="max-w-[1200px] mx-auto px-7 md:px-0 py-14 md:py-24">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
@@ -135,7 +204,12 @@ const PatientsTestimonial = () => {
           >
             {VIDEOS.map((src, i) => (
               <SwiperSlide key={i}>
-                <VideoCard src={src} />
+                <VideoCard
+                  src={src}
+                  isActive={activeIndex === i}
+                  onEnded={() => handleEnded(i)}
+                  onManualPlay={() => setActiveIndex(i)}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

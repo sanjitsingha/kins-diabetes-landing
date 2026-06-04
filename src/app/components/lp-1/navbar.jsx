@@ -15,7 +15,7 @@ function LanguageSwitcher() {
   const ref = useRef(null)
 
   useEffect(() => {
-    const lang = localStorage.getItem('kins_lang') || 'en'
+    const lang = new URLSearchParams(window.location.search).get('lang') || 'en'
     setCurrent(lang)
   }, [])
 
@@ -31,25 +31,13 @@ function LanguageSwitcher() {
     setOpen(false)
     if (code === current) return
 
+    const url = new URL(window.location.href)
     if (code === 'en') {
-      localStorage.removeItem('kins_lang')
-      // Server-side cookie clear — 100% reliable vs document.cookie
-      window.location.href = '/api/reset-lang'
-      return
+      url.searchParams.delete('lang')
+    } else {
+      url.searchParams.set('lang', code)
     }
-
-    const apply = (attempts = 0) => {
-      const sel = document.querySelector('.goog-te-combo')
-      if (sel) {
-        sel.value = code
-        sel.dispatchEvent(new Event('change'))
-        localStorage.setItem('kins_lang', code)
-        setCurrent(code)
-      } else if (attempts < 20) {
-        setTimeout(() => apply(attempts + 1), 200)
-      }
-    }
-    apply()
+    window.location.href = url.toString()
   }
 
   const active = LANGS.find(l => l.code === current) || LANGS[0]

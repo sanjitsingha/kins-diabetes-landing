@@ -68,15 +68,14 @@ export default function RootLayout({ children }) {
               { pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false },
               'google_translate_element'
             );
+            var lang = new URLSearchParams(location.search).get('lang');
+            if (!lang || lang === 'en') return;
             var check = setInterval(function() {
               var sel = document.querySelector('.goog-te-combo');
               if (sel) {
                 clearInterval(check);
-                var saved = localStorage.getItem('kins_lang');
-                if (saved && saved !== 'en') {
-                  sel.value = saved;
-                  sel.dispatchEvent(new Event('change'));
-                }
+                sel.value = lang;
+                sel.dispatchEvent(new Event('change'));
               }
             }, 300);
           }
