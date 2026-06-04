@@ -31,14 +31,24 @@ function LanguageSwitcher() {
     setOpen(false)
     if (code === current) return
 
-    if (code === 'en') localStorage.removeItem('kins_lang')
-    else localStorage.setItem('kins_lang', code)
-
-    setCurrent(code)
+    if (code === 'en') {
+      localStorage.removeItem('kins_lang')
+      // Clear the googtrans cookie Google Translate sets internally, then reload
+      const exp = 'expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/'
+      document.cookie = 'googtrans=; ' + exp
+      document.cookie = 'googtrans=; ' + exp + '; domain=' + location.hostname
+      document.cookie = 'googtrans=; ' + exp + '; domain=.' + location.hostname
+      window.location.reload()
+      return
+    }
 
     const apply = (attempts = 0) => {
-      if (typeof doGTranslate === 'function') {
-        doGTranslate('en|' + code)
+      const sel = document.querySelector('.goog-te-combo')
+      if (sel) {
+        sel.value = code
+        sel.dispatchEvent(new Event('change'))
+        localStorage.setItem('kins_lang', code)
+        setCurrent(code)
       } else if (attempts < 20) {
         setTimeout(() => apply(attempts + 1), 200)
       }
@@ -103,8 +113,8 @@ const Navbar = () => {
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* Hidden GTranslate mount point */}
-      <div id="gtranslate_wrapper" style={{ display: 'none' }} />
+      {/* Hidden Google Translate mount point */}
+      <div id="google_translate_element" className="hidden" />
 
       <div className="max-w-[1200px] px-6 mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
         <a href="/" className="md:h-[42px] h-[30px] shrink-0">

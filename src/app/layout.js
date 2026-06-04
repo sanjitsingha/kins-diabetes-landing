@@ -62,29 +62,29 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        {/* GTranslate settings — plain script tag guarantees it runs before CDN script */}
-        <script dangerouslySetInnerHTML={{__html: `
-          window.gtranslateSettings = {
-            default_language: 'en',
-            languages: ['en', 'hi', 'bn'],
-            wrapper_selector: '#gtranslate_wrapper',
-            flag_style: 'none',
-            native_language_names: true,
-          };
-        `}} />
+        <Script id="google-translate-init" strategy="afterInteractive">{`
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+              { pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false },
+              'google_translate_element'
+            );
+            var check = setInterval(function() {
+              var sel = document.querySelector('.goog-te-combo');
+              if (sel) {
+                clearInterval(check);
+                var saved = localStorage.getItem('kins_lang');
+                if (saved && saved !== 'en') {
+                  sel.value = saved;
+                  sel.dispatchEvent(new Event('change'));
+                }
+              }
+            }, 300);
+          }
+        `}</Script>
         <Script
-          src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
+          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
         />
-        <Script id="gtranslate-restore" strategy="afterInteractive">{`
-          var _gt = setInterval(function() {
-            if (typeof doGTranslate === 'function') {
-              clearInterval(_gt);
-              var saved = localStorage.getItem('kins_lang');
-              if (saved && saved !== 'en') doGTranslate('en|' + saved);
-            }
-          }, 200);
-        `}</Script>
         <Script
           defer
           src="https://cloud.umami.is/script.js"
