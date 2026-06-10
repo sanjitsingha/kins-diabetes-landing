@@ -35,8 +35,14 @@ const GoogleLogo = () => (
 
 const GoogleReviews = () => {
   return (
-    <div className="w-full bg-gray-100">
-      <div className="max-w-[1200px] mx-auto px-7 py-30">
+    <div className="w-full relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #e8f4fd 0%, #f0f9ff 30%, #e0f2fe 60%, #f8fafc 100%)' }}>
+      {/* Decorative blobs */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full opacity-30 pointer-events-none" style={{ background: 'radial-gradient(circle, #12a4dd 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      <div className="absolute top-1/2 -right-32 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none" style={{ background: 'radial-gradient(circle, #0d6efd 0%, transparent 70%)', filter: 'blur(80px)' }} />
+      <div className="absolute -bottom-20 left-1/3 w-80 h-80 rounded-full opacity-25 pointer-events-none" style={{ background: 'radial-gradient(circle, #38bdf8 0%, transparent 70%)', filter: 'blur(50px)' }} />
+      {/* Subtle dot pattern overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #0d1b2a 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+      <div className="max-w-[1200px] mx-auto px-7 py-30 relative z-10">
         <div className="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase text-[#12a4dd] mb-4 before:content-[''] before:w-7 before:h-0.5 before:bg-[#12a4dd] before:rounded">
@@ -68,7 +74,7 @@ const GoogleReviews = () => {
         >
           {REVIEWS.map((r, i) => (
             <SwiperSlide key={i}>
-              <div className="bg-white border border-[#e2ecf3] rounded p-5 py-10 mt-10 flex flex-col gap-3 min-h-[350px]">
+              <div className="bg-white/80 backdrop-blur-sm border border-white/60 shadow-md shadow-blue-100/50 rounded-xl p-5 py-10 mt-10 flex flex-col gap-3 min-h-[350px]">
                 <div className="flex items-center mb-4 justify-between">
                   <div className="flex items-center gap-3">
                     <div translate="no" className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>

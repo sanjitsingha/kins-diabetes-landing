@@ -20,6 +20,14 @@ const VideoCard = ({ src, isActive, onEnded, onManualPlay }) => {
   const [mounted, setMounted]     = useState(false)
   const [muted, setMuted]         = useState(true)
 
+  // Sync muted state → DOM imperatively.
+  // React's `muted` prop does not update the DOM property after initial mount,
+  // so we bypass it entirely and drive video.muted from this effect.
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) video.muted = muted
+  }, [muted])
+
   // Lazy-mount when card enters viewport
   useEffect(() => {
     const el = containerRef.current
@@ -35,9 +43,10 @@ const VideoCard = ({ src, isActive, onEnded, onManualPlay }) => {
   // Drive playback from isActive prop
   useEffect(() => {
     if (isActive) {
-      if (!mounted) { setMounted(true); return } // re-fires below when mounted flips
+      if (!mounted) { setMounted(true); return } // re-fires below once mounted flips
       const video = videoRef.current
       if (!video) return
+      // Set muted directly before play() so the browser sees it immediately
       video.muted = true
       setMuted(true)
       video.currentTime = 0
@@ -52,16 +61,16 @@ const VideoCard = ({ src, isActive, onEnded, onManualPlay }) => {
     onManualPlay?.()
     const video = videoRef.current
     if (!video) { setMounted(true); return }
-    if (video.paused) { video.play(); setIsPlaying(true) }
+    if (video.paused) { video.play().then(() => setIsPlaying(true)).catch(() => {}) }
     else              { video.pause(); setIsPlaying(false) }
   }
 
+  // Use React state as the single source of truth for muted.
+  // The useEffect above syncs it to the DOM — no direct video.muted reads here.
   const toggleMute = (e) => {
     e.stopPropagation()
-    const video = videoRef.current
-    if (!video) return
-    video.muted = !video.muted
-    setMuted(video.muted)
+    e.preventDefault()
+    setMuted(prev => !prev)
   }
 
   return (
@@ -99,12 +108,13 @@ const VideoCard = ({ src, isActive, onEnded, onManualPlay }) => {
         </div>
       </button>
 
-      {/* Mute toggle — bottom-right, only while playing */}
+      {/* Mute toggle — z-20 ensures it sits above the inset-0 play overlay */}
       {isPlaying && (
         <button
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={toggleMute}
           aria-label={muted ? 'Unmute' : 'Mute'}
-          className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-[#12a4dd] transition-colors"
+          className="absolute bottom-3 right-3 z-20 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-[#12a4dd] active:scale-90 transition-all touch-manipulation"
         >
           {muted
             ? <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" strokeWidth="2.5" strokeLinecap="round"/></svg>
@@ -150,13 +160,13 @@ const PatientsTestimonial = () => {
           observer.disconnect()
         }
       },
-      { rootMargin: '-25% 0px' } // fires when section is in center ~50% of viewport
+      { rootMargin: '-25% 0px' }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
-  // Slide Swiper to match active video
+  // Slide Swiper to match active video (e.g. auto-advance on ended)
   useEffect(() => {
     if (activeIndex >= 0) swiperRef.current?.slideTo(activeIndex, 500)
   }, [activeIndex])
@@ -192,7 +202,11 @@ const PatientsTestimonial = () => {
           <Swiper
             modules={[Pagination]}
             onSwiper={(swiper) => { swiperRef.current = swiper; updateNavState(swiper) }}
-            onSlideChange={updateNavState}
+            onSlideChange={(swiper) => {
+              updateNavState(swiper)
+              // Auto-play the newly active slide when user swipes
+              setActiveIndex(swiper.activeIndex)
+            }}
             spaceBetween={20}
             slidesPerView={1.25}
             grabCursor

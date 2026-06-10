@@ -13,6 +13,8 @@ import ServicesSection from '../components/lp-1/servicesSection';
 import ProblemSection2 from '../components/lp-1/ProblemsSection';
 import CTASection from '../components/lp-1/ctaSection';
 import MobileBottomBar from '../components/lp-1/mobileBottomBar';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 // ─── SVG Icon ─────────────────────────────────────────────────────────────────
 const icons = {
@@ -65,6 +67,12 @@ function DoctorCard({ name, role, years, tone, imageSrc, quals, specialisation, 
         d: 'from-[#b1e0c6] via-[#5fb188] to-[#1f7a4f]',
         e: 'from-[#d4c0ee] via-[#9978ce] to-[#6b4ca8]',
     };
+    const darkGradients = {
+        a: 'from-[#071422] via-[#0a3255] to-[#0b6090]',
+        b: 'from-[#0a1520] via-[#182436] to-[#2e3f60]',
+        d: 'from-[#051510] via-[#0b2a1a] to-[#155e35]',
+        e: 'from-[#0e061c] via-[#22113c] to-[#4e2d7a]',
+    };
     const showBack = flipped || hovered;
     return (
         <div
@@ -90,16 +98,16 @@ function DoctorCard({ name, role, years, tone, imageSrc, quals, specialisation, 
                         <Icon name="arrowRight" size={13} />
                     </div>
                 </div>
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white to-[#f0f9fe] border border-[#c8dde8] p-4 md:p-6 flex flex-col" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                    <div className="text-center pb-3 md:pb-4 border-b border-[#c8dde8] mb-3 md:mb-4">
-                        <div className="font-serif text-[#0d1b2a] text-base md:text-lg leading-tight">{name}</div>
-                        <div className="text-[#5a7184] text-xs mt-1">{role}</div>
+                <div className={`absolute inset-0 rounded-2xl bg-linear-to-b ${darkGradients[tone]} border border-white/10 p-4 md:p-6 flex flex-col`} style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                    <div className="text-center pb-3 md:pb-4 border-b border-white/15 mb-3 md:mb-4">
+                        <div className="font-serif text-white text-base md:text-lg leading-tight">{name}</div>
+                        <div className="text-white/60 text-xs mt-1">{role}</div>
                     </div>
                     <ul className="space-y-2 md:space-y-3 flex-1 flex flex-col justify-center">
                         {[{ label: 'Qualifications', val: quals }, { label: 'Specialisation', val: specialisation }, { label: 'Languages', val: languages }, { label: 'Available', val: available }].map(({ label, val }) => (
                             <li key={label}>
-                                <div className="text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-[#12a4dd]">{label}</div>
-                                <div className="text-xs md:text-sm text-[#1e2d3d] leading-snug mt-0.5">{val}</div>
+                                <div className="text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-[#7dd3f5]">{label}</div>
+                                <div className="text-xs md:text-sm text-white/85 leading-snug mt-0.5">{val}</div>
                             </li>
                         ))}
                     </ul>
@@ -148,6 +156,10 @@ const CONTACT_ITEMS = [
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function DiabetesCounsellingPage() {
+    const doctorsSwiperRef                    = useRef(null)
+    const [docIsBeginning, setDocIsBeginning] = useState(true)
+    const [docIsEnd, setDocIsEnd]             = useState(false)
+
     return (
         <>
             <Head>
@@ -245,8 +257,42 @@ export default function DiabetesCounsellingPage() {
                             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0d1b2a] leading-tight mb-4">Expert doctors. Real experience. Right here in Siliguri.</h2>
                             <p className="text-[#5a7184] text-sm sm:text-base">Our specialists have dedicated their careers to diabetes — so you get the most informed, experienced guidance possible.</p>
                         </div>
-                        <div className="h-scroll">
-                            {DOCTORS.map((doc) => <DoctorCard key={doc.name} {...doc} />)}
+                        <div className="relative px-10 md:px-14">
+                            <button
+                                onClick={() => doctorsSwiperRef.current?.slidePrev()}
+                                disabled={docIsBeginning}
+                                aria-label="Previous doctor"
+                                className="flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                            </button>
+
+                            <Swiper
+                                onSwiper={(swiper) => { doctorsSwiperRef.current = swiper; setDocIsBeginning(swiper.isBeginning); setDocIsEnd(swiper.isEnd) }}
+                                onSlideChange={(swiper) => { setDocIsBeginning(swiper.isBeginning); setDocIsEnd(swiper.isEnd) }}
+                                spaceBetween={20}
+                                slidesPerView={1.1}
+                                grabCursor
+                                breakpoints={{
+                                    640:  { slidesPerView: 2,   spaceBetween: 20 },
+                                    1024: { slidesPerView: 3,   spaceBetween: 24 },
+                                }}
+                            >
+                                {DOCTORS.map((doc) => (
+                                    <SwiperSlide key={doc.name}>
+                                        <DoctorCard {...doc} />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+
+                            <button
+                                onClick={() => doctorsSwiperRef.current?.slideNext()}
+                                disabled={docIsEnd}
+                                aria-label="Next doctor"
+                                className="flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white shadow-md border border-gray-200 items-center justify-center transition-all duration-200 hover:bg-gray-50 hover:border-[#12a4dd] hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                            </button>
                         </div>
                     </div>
                 </section>
