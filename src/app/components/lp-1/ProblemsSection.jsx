@@ -100,6 +100,9 @@ export default function ProblemsSection() {
     Math.max(0, 1 - norm(progress, 0.05, 0.10))
   const headingY = lerp(30, 0, norm(progress, 0, 0.04))
 
+  const bgOpacity       = Math.sin(progress * Math.PI) * 0.6
+  const mobileBgOpacity = Math.sin(mobileProgress * Math.PI) * 0.6
+
   return (
     <>
       {/* ── Desktop: sticky scroll theater ── */}
@@ -109,6 +112,27 @@ export default function ProblemsSection() {
         style={{ height: '700vh' }}
       >
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+
+          {/* Static subtle grid */}
+          <div
+            className="absolute inset-0 pointer-events-none z-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(180,100,220,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180,100,220,0.035) 1px, transparent 1px)
+              `,
+              backgroundSize: '28px 28px',
+            }}
+          />
+
+          {/* Scroll-reactive gradient background */}
+          <div
+            className="absolute inset-0 pointer-events-none z-0"
+            style={{
+              opacity: bgOpacity,
+              background: 'radial-gradient(ellipse 90% 75% at 50% 50%, #EDD0F7 0%, rgba(237,208,247,0.45) 40%, rgba(244,229,249,0.15) 68%, rgba(244,229,249,0) 100%)',
+            }}
+          />
 
           {/* Section heading */}
           <div
@@ -181,6 +205,27 @@ export default function ProblemsSection() {
       {/* ── Mobile: sticky scroll animation ── */}
       <section ref={mobileSectionRef} className="lg:hidden bg-white relative" style={{ height: '480vh' }}>
         <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden gap-22">
+
+          {/* Static subtle grid */}
+          <div
+            className="absolute inset-0 pointer-events-none z-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(180,100,220,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180,100,220,0.035) 1px, transparent 1px)
+              `,
+              backgroundSize: '28px 28px',
+            }}
+          />
+
+          {/* Scroll-reactive gradient background */}
+          <div
+            className="absolute inset-0 pointer-events-none z-0"
+            style={{
+              opacity: mobileBgOpacity,
+              background: 'radial-gradient(ellipse 90% 75% at 50% 50%, #EDD0F7 0%, rgba(237,208,247,0.45) 40%, rgba(244,229,249,0.15) 68%, rgba(244,229,249,0) 100%)',
+            }}
+          />
 
           {/* Heading */}
           <div className="text-center z-10 px-4">
