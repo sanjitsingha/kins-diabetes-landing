@@ -11,6 +11,8 @@ import GoogleReviews from '../components/lp-1/googleReviews';
 import HeroSection from '../components/lp-1/hero';
 import ServicesSection from '../components/lp-1/servicesSection';
 import ProblemSection2 from '../components/lp-1/ProblemsSection';
+import CTASection from '../components/lp-1/ctaSection';
+import MobileBottomBar from '../components/lp-1/mobileBottomBar';
 
 // ─── SVG Icon ─────────────────────────────────────────────────────────────────
 const icons = {
@@ -183,11 +185,11 @@ export default function DiabetesCounsellingPage() {
                             <p className="text-[#5a7184] text-sm sm:text-base">Most clinics give you a prescription and send you home. We build you a complete system.</p>
                         </div>
 
-                        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden border border-[#dde6ed] shadow-sm">
+                        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden border border-[#dde6ed] shadow-sm">
                             <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#dde6ed]">
 
                                 {/* ── Kins column ── */}
-                                <div className="bg-[#f0f9ff] p-7 md:p-10">
+                                <div className="bg-linear-to-br from-white to-[#f0f9ff] p-7 md:p-10">
                                     <div className="mb-8">
                                         <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#12a4dd] mb-1.5">Kins Diabetes</p>
                                         <h3 className="font-serif text-xl md:text-2xl text-[#0d1b2a] leading-snug">Everything you need, under one roof.</h3>
@@ -267,6 +269,9 @@ export default function DiabetesCounsellingPage() {
                     </div>
                 </section>
 
+                {/* ─── CTA ──────────────────────────────────────── */}
+                <CTASection />
+
                 {/* ─── CONTACT ──────────────────────────────────── */}
                 <section className="py-14 md:py-24 bg-[#0b7aaa] text-white" id="contact">
                     <div id="book" className="relative -top-20" />
@@ -310,6 +315,8 @@ export default function DiabetesCounsellingPage() {
                 </section>
 
             </div>
+
+            <MobileBottomBar />
         </>
     );
 }

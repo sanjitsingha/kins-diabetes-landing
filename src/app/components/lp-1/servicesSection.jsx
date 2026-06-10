@@ -232,7 +232,7 @@ function Card4({ stackIndex = 3 }) {
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ServicesSection() {
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white" style={{ backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)', backgroundSize: '22px 22px' }}>
       <div className="max-w-[1200px] mx-auto px-4 py-20">
 
         {/* Section heading */}
