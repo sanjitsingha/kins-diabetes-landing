@@ -18,15 +18,11 @@ const Navbar = () => {
 
   return (
     <header
-      translate="no"
-      className={`fixed top-0 left-0 w-full z-50 border-b border-[#c8dde8] bg-white/95 backdrop-blur-md transition-transform duration-500 ${
+           className={`fixed top-0 left-0 w-full z-50 border-b border-[#c8dde8] bg-white/95 backdrop-blur-md transition-transform duration-500 ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* Hidden Google Translate mount point */}
-      <div id="google_translate_element" className="hidden" />
-
-      <div className="max-w-[1200px] px-6 mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
+<div className="max-w-[1200px] px-6 mx-auto md:px-7 h-[76px] flex items-center justify-between gap-4">
         <a href="/" className="md:h-[42px] h-[30px] shrink-0">
           <img src="/landing-page/kd-logo.png" alt="Kins Diabetes" className="h-full w-auto" />
         </a>

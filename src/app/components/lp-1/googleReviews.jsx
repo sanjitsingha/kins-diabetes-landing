@@ -54,10 +54,10 @@ const GoogleReviews = () => {
             <GoogleLogo />
             <div>
               <div className="flex items-center gap-1.5">
-                <span translate="no" className="font-bold text-[#0d1b2a] text-lg leading-none">4.8</span>
-                <div translate="no"><StarRating rating={5} /></div>
+                <span className="font-bold text-[#0d1b2a] text-lg leading-none">4.8</span>
+                <div><StarRating rating={5} /></div>
               </div>
-              <div translate="no" className="text-[#5a7184] text-xs mt-0.5">Based on 1,400+ reviews</div>
+              <div className="text-[#5a7184] text-xs mt-0.5">Based on 1,400+ reviews</div>
             </div>
           </div>
         </div>
@@ -77,17 +77,17 @@ const GoogleReviews = () => {
               <div className="bg-white/80 backdrop-blur-sm border border-white/60 shadow-md shadow-blue-100/50 rounded-xl p-5 py-10 mt-10 flex flex-col gap-3 min-h-[350px]">
                 <div className="flex items-center mb-4 justify-between">
                   <div className="flex items-center gap-3">
-                    <div translate="no" className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: r.color }}>
                       {r.initials}
                     </div>
                     <div>
-                      <div translate="no" className="font-semibold text-[#0d1b2a] capitalize text-sm leading-tight">{r.name}</div>
-                      <div translate="no" className="text-[#94a3b8] text-xs mt-0.5">{r.date}</div>
+                      <div className="font-semibold text-[#0d1b2a] capitalize text-sm leading-tight">{r.name}</div>
+                      <div className="text-[#94a3b8] text-xs mt-0.5">{r.date}</div>
                     </div>
                   </div>
                   <GoogleLogo />
                 </div>
-                <div translate="no"><StarRating rating={r.rating} /></div>
+                <div><StarRating rating={r.rating} /></div>
                 <p className="text-[#5a7184] text-sm leading-relaxed flex-1 mt-3">"{r.review}"</p>
               </div>
             </SwiperSlide>

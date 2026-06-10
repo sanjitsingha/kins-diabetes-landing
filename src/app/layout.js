@@ -62,29 +62,7 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        <Script id="google-translate-init" strategy="afterInteractive">{`
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-              { pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false },
-              'google_translate_element'
-            );
-            var lang = new URLSearchParams(location.search).get('lang');
-            if (!lang || lang === 'en') return;
-            var check = setInterval(function() {
-              var sel = document.querySelector('.goog-te-combo');
-              if (sel) {
-                clearInterval(check);
-                sel.value = lang;
-                sel.dispatchEvent(new Event('change'));
-              }
-            }, 300);
-          }
-        `}</Script>
-        <Script
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
-        />
-        <Script
+<Script
           defer
           src="https://cloud.umami.is/script.js"
           data-website-id="b361ee75-7067-4043-a9be-baf64a4f0f81"
