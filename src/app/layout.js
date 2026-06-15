@@ -19,7 +19,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+
       <head>
+        <meta name="google-site-verification" content="dyZ9D1foKoeRmQWs9ZDcZQ7PG8-j_mZFpvLhBgizROk" />
              {/* GTM Script - in <head> */}
         <Script
           id="gtm-script"
