@@ -76,6 +76,14 @@ function TextInput({ error, ...props }) {
   );
 }
 
+// Maps raw utm_source values to the exact Zoho Lead_Source picklist values
+function resolveLeadSource(utmSource) {
+  const src = (utmSource || "").toLowerCase().trim();
+  if (src === "google" || src === "googleads") return "Google";
+  if (src === "facebook") return "Facebook";
+  return "";
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function BookAppointmentPage() {
   const router = useRouter();
@@ -86,11 +94,8 @@ export default function BookAppointmentPage() {
 
   // Phone pre-filled from ?phone= URL param
   const [phoneFromUrl, setPhoneFromUrl] = useState("");
-  const [utm, setUtm] = useState({
-  source: "",
-  medium: "",
-  campaign: "",
-});
+  const [utm, setUtm] = useState({ source: "", medium: "", campaign: "" });
+  const [leadSource, setLeadSource] = useState("");
 
  useEffect(() => {
   const params = new URLSearchParams(window.location.search);
@@ -105,11 +110,13 @@ export default function BookAppointmentPage() {
     }));
   }
 
+  const src = params.get("utm_source") || "";
   setUtm({
-    source: params.get("utm_source") || "",
+    source: src,
     medium: params.get("utm_medium") || "",
     campaign: params.get("utm_campaign") || "",
   });
+  setLeadSource(resolveLeadSource(src));
 
 }, []);
 
@@ -199,7 +206,7 @@ body: JSON.stringify({
   diabetic: form.diabetic,
   service: form.service,
 
-  Lead_Source: utm.source,
+  Lead_Source: leadSource,
   utm_source: utm.source,
   utm_medium: utm.medium,
   utm_campaign: utm.campaign,

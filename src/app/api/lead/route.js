@@ -29,7 +29,7 @@ export async function POST(req) {
 
             Landing_Page: body.landing_page,
 
-            Lead_Source: "Facebook",
+            Lead_Source: body.Lead_Source || undefined,
           },
         ],
       }),
