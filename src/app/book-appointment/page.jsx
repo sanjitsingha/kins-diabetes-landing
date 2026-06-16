@@ -79,7 +79,7 @@ function TextInput({ error, ...props }) {
 // Maps raw utm_source values to the exact Zoho Lead_Source picklist values
 function resolveLeadSource(utmSource) {
   const src = (utmSource || "").toLowerCase().trim();
-  if (src === "google" || src === "googleads") return "Google";
+  if (src === "google" || src === "googleads") return "Google Ads";
   if (src === "facebook") return "Facebook";
   return "";
 }
