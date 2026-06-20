@@ -94,7 +94,7 @@ export default function BookAppointmentPage() {
 
   // Phone pre-filled from ?phone= URL param
   const [phoneFromUrl, setPhoneFromUrl] = useState("");
-  const [utm, setUtm] = useState({ source: "", medium: "", campaign: "" });
+  const [utm, setUtm] = useState({ source: "", medium: "", campaign: "", content: "" });
   const [leadSource, setLeadSource] = useState("");
 
  useEffect(() => {
@@ -115,6 +115,7 @@ export default function BookAppointmentPage() {
     source: src,
     medium: params.get("utm_medium") || "",
     campaign: params.get("utm_campaign") || "",
+    content: params.get("utm_content") || "",
   });
   setLeadSource(resolveLeadSource(src));
 
@@ -182,7 +183,13 @@ const handleSubmit = async (e) => {
             mobile: form.mobile,
             city: form.city,
             diabetic: form.diabetic,
-            service: form.service
+            service: form.service,
+            utm_source: utm.source || null,
+            utm_medium: utm.medium || null,
+            utm_campaign: utm.campaign || null,
+            utm_content: utm.content || null,
+            lead_source: leadSource || null,
+            landing_page: window.location.href,
           }
         ]);
 
@@ -210,6 +217,7 @@ body: JSON.stringify({
   utm_source: utm.source,
   utm_medium: utm.medium,
   utm_campaign: utm.campaign,
+  utm_content: utm.content,
 
   landing_page: window.location.href
 })

@@ -26,6 +26,7 @@ export async function POST(req) {
             UTM_Source: body.utm_source,
             UTM_Medium: body.utm_medium,
             UTM_Campaign: body.utm_campaign,
+            UTM_Content: body.utm_content || undefined,
 
             Landing_Page: body.landing_page,
 
