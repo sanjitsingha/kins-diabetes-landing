@@ -80,7 +80,7 @@ function TextInput({ error, ...props }) {
 function resolveLeadSource(utmSource) {
   const src = (utmSource || "").toLowerCase().trim();
   if (src === "google" || src === "googleads") return "Google Ads";
-  if (src === "facebook") return "Facebook";
+  if (src === "facebook" || src === "fb" || src === "ig") return "Facebook";
   return "";
 }
 
@@ -201,27 +201,28 @@ const handleSubmit = async (e) => {
 
     // Save to Zoho CRM
 
-    await fetch("/api/lead", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-body: JSON.stringify({
-  name: form.name,
-  mobile: form.mobile,
-  city: form.city,
-  diabetic: form.diabetic,
-  service: form.service,
+    const zohoRes = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.name,
+        mobile: form.mobile,
+        city: form.city,
+        diabetic: form.diabetic,
+        service: form.service,
+        Lead_Source: leadSource,
+        utm_source: utm.source,
+        utm_medium: utm.medium,
+        utm_campaign: utm.campaign,
+        utm_content: utm.content,
+        landing_page: window.location.href,
+      }),
+    });
 
-  Lead_Source: leadSource,
-  utm_source: utm.source,
-  utm_medium: utm.medium,
-  utm_campaign: utm.campaign,
-  utm_content: utm.content,
-
-  landing_page: window.location.href
-})
-});
+    if (!zohoRes.ok) {
+      const zohoErr = await zohoRes.text().catch(() => "unknown");
+      console.error("Zoho CRM push failed:", zohoRes.status, zohoErr);
+    }
 
 // Meta Lead Event — with user data for match quality
 if (typeof window !== "undefined" && typeof fbq === "function") {
