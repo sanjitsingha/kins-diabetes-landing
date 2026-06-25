@@ -4,11 +4,11 @@ import { getZohoAccessToken } from "@/lib/zoho";
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("Lead Data:", body);
+    console.log("[Zoho Lead] Incoming payload:", JSON.stringify(body));
 
-    const accessToken = await getZohoAccessToken();
+    const { accessToken, apiDomain } = await getZohoAccessToken();
 
-    const response = await fetch("https://www.zohoapis.in/crm/v2/Leads", {
+    const response = await fetch(`${apiDomain}/crm/v8/Leads/upsert`, {
       method: "POST",
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -19,7 +19,7 @@ export async function POST(req) {
           {
             Last_Name: body.name,
             Mobile: body.mobile,
-            City: body.city,    
+            City: body.city,
             Are_You_Diabetic: body.diabetic,
             How_Can_I_Help_You: body.service,
 
@@ -33,26 +33,33 @@ export async function POST(req) {
             Lead_Source: body.Lead_Source || undefined,
           },
         ],
+        duplicate_check_fields: ["Mobile"],
       }),
     });
 
     const result = await response.json();
 
-    console.log("Zoho Status:", response.status);
-    console.log("Zoho Full Response:", JSON.stringify(result, null, 2));
+    console.log("[Zoho Lead] HTTP status:", response.status);
+    console.log("[Zoho Lead] Response body:", JSON.stringify(result, null, 2));
+
+    if (!response.ok) {
+      console.error("[Zoho Lead] API error — HTTP", response.status, JSON.stringify(result));
+      return NextResponse.json(result, { status: response.status });
+    }
+
+    const record = result?.data?.[0];
+    if (record?.status === "error") {
+      console.error("[Zoho Lead] Record-level error:", JSON.stringify(record));
+      return NextResponse.json(result, { status: 400 });
+    }
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error(error);
+    console.error("[Zoho Lead] Exception:", error.message, error.stack);
 
     return NextResponse.json(
-      {
-        success: false,
-        error: error.message,
-      },
-      {
-        status: 500,
-      },
+      { success: false, error: error.message },
+      { status: 500 },
     );
   }
 }
