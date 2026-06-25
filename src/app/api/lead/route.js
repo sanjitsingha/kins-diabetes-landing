@@ -28,7 +28,7 @@ export async function POST(req) {
             UTM_Campaign: body.utm_campaign,
             UTM_Content: body.utm_content || undefined,
 
-            Landing_Page: body.landing_page,
+            Landing_Page: body.landing_page?.split('?')[0],
 
             Lead_Source: body.Lead_Source || undefined,
           },
