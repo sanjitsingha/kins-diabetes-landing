@@ -1,10 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+// ── MODULE-LEVEL FLAG ────────────────────────────────────────────────────────
+// Lives OUTSIDE the component. Unlike useRef, this is NOT reset on component
+// remount. This is the definitive guard against double-firing conversion events
+// in Next.js App Router where client-side navigation can remount components.
+// Persists for the entire browser session — exactly what we want for a
+// one-time-per-session conversion event.
+let conversionFired = false;
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-function PhoneIcon({ className = "" }) {  
+function PhoneIcon({ className = "" }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -19,35 +27,45 @@ const STEPS = [
 ];
 
 export default function ThankYouPage() {
-const fired = useRef(false);
 
-useEffect(() => {
-   if (fired.current) return;
-    fired.current = true;
+  useEffect(() => {
+    // ── CONVERSION GUARD ───────────────────────────────────────────────────
+    // Module-level flag (not useRef) — survives component remounts.
+    // Fires conversion events exactly once per browser session,
+    // regardless of how many times Next.js mounts/remounts this component.
+    if (conversionFired) return;
+    conversionFired = true;
 
-  const params = new URLSearchParams(window.location.search);
-
-  // ── Google Ads Conversion ──────────────────────
-  if (window.dataLayer) {
+    // ── SINGLE SOURCE OF TRUTH for conversion_lead ─────────────────────────
+    // This is the ONLY place conversion_lead is pushed.
+    // GTM Lead Trigger listens for this and fires 4 tags:
+    //   1. BS - FB - Lead Event        → Meta Lead
+    //   2. BS - GA4 - Lead             → GA4 Lead
+    //   3. GAD - Lead Conversion       → Google Ads
+    //   4. Google Ads Conversion Tracking (currently paused)
+    //
+    // GTM tag "DL - conversion_lead Push - Care LP" is PAUSED permanently.
+    // Do NOT unpause it — this page.jsx push is the sole source.
+    window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: "conversion_lead",
       page_path: "/thank-you",
     });
-  }
 
-  // ── META Pixel CompleteRegistration ───────────
-  if (typeof fbq === "function") {
-    fbq("track", "CompleteRegistration", {
-      content_name: "Consultation Booked",
-      currency: "INR",
-      value: 500,
-      status: true,
-      ph: params.get("ph") || "",
-      fn: params.get("fn") || "",
-      ct: params.get("ct") || "",
-    });
-  }
-}, []);
+    // ── META Pixel: CompleteRegistration ───────────────────────────────────
+    // Fires once here on confirmation page load — the accurate, reliable signal.
+    // PII params (ph/fn/ct) removed: they arrived empty from URL params,
+    // causing zero EMQ match score. Fix via server-side CAPI in next sprint.
+    if (typeof fbq === "function") {
+      fbq("track", "CompleteRegistration", {
+        content_name: "Consultation Booked",
+        currency: "INR",
+        value: 500,
+        status: true,
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#faf8f4] text-[#0d1c2e] flex flex-col">
 
